@@ -20,7 +20,6 @@ Vue.prototype.$mount = function (
   hydrating?: boolean
 ): Component {
   el = el && query(el)
-
   /* istanbul ignore if */
   if (el === document.body || el === document.documentElement) {
     process.env.NODE_ENV !== 'production' && warn(
@@ -56,6 +55,7 @@ Vue.prototype.$mount = function (
     } else if (el) {
       template = getOuterHTML(el)
     }
+    
     if (template) {
       /* istanbul ignore if */
       if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
@@ -71,14 +71,15 @@ Vue.prototype.$mount = function (
       }, this)
       options.render = render
       options.staticRenderFns = staticRenderFns
-
+      
       /* istanbul ignore if */
       if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
-        mark('compile end')
+        mark('compile end')  
         measure(`vue ${this._name} compile`, 'compile', 'compile end')
       }
     }
   }
+  
   return mount.call(this, el, hydrating)
 }
 

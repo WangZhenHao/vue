@@ -28,7 +28,10 @@ export function initRender (vm: Component) {
   // so that we get proper render context inside it.
   // args order: tag, data, children, normalizationType, alwaysNormalize
   // internal version is used by render functions compiled from templates
-  vm._c = (a, b, c, d) => createElement(vm, a, b, c, d, false)
+  vm._c = (a, b, c, d) =>  { 
+    // "with(this){return _c('div',{attrs:{"id":"app"}},[_c('div',[_v(_s(msg))])])}"
+    return createElement(vm, a, b, c, d, false) 
+  }
   // normalization is always applied for the public version, used in
   // user-written render functions.
   vm.$createElement = (a, b, c, d) => createElement(vm, a, b, c, d, true)
@@ -66,10 +69,18 @@ export function renderMixin (Vue: Class<Component>) {
     return nextTick(fn, this)
   }
 
+  /**
+   * 通过执行_render函数
+   * 得到虚拟dom
+   * 然后执行_patch_方法中的patch函数
+   * patch函数会执行creteEle对虚拟的vonde进行解析
+   * 如果是组件，就会再执行_init()，走一次初始化，自己执行$mount方法
+   * 
+   * 
+   */
   Vue.prototype._render = function (): VNode {
     const vm: Component = this
     const { render, _parentVnode } = vm.$options
-
     if (_parentVnode) {
       vm.$scopedSlots = normalizeScopedSlots(
         _parentVnode.data.scopedSlots,

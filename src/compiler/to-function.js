@@ -18,6 +18,14 @@ function createFunction (code, errors) {
   }
 }
 
+
+/**
+ * 编译的字符串变成可执行的函数
+ * 
+ * 类似于：
+ * new Function('with(this){return _c('div',{attrs:{"id":"app"}},[_v("\n\t\t111\n\t\t"),_c('div',[_v("222")]),_v("\n\t\t"+_s(msg)+"\n\t\t"),_c('test',[_v("333")]),_v(" "),_c('test',[_v("444")])],1)}')
+ */
+
 export function createCompileToFunctionFn (compile: Function): Function {
   const cache = Object.create(null)
 
@@ -58,7 +66,6 @@ export function createCompileToFunctionFn (compile: Function): Function {
 
     // compile
     const compiled = compile(template, options)
-
     // check compilation errors/tips
     if (process.env.NODE_ENV !== 'production') {
       if (compiled.errors && compiled.errors.length) {

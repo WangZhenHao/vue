@@ -110,7 +110,6 @@ export function createComponent (
   }
 
   const baseCtor = context.$options._base
-
   // plain options object: turn it into a constructor
   if (isObject(Ctor)) {
     Ctor = baseCtor.extend(Ctor)
@@ -201,7 +200,6 @@ export function createComponent (
   if (__WEEX__ && isRecyclableComponent(vnode)) {
     return renderRecyclableComponentTemplate(vnode)
   }
-
   return vnode
 }
 
@@ -219,7 +217,11 @@ export function createComponentInstanceForVnode (
   if (isDef(inlineTemplate)) {
     options.render = inlineTemplate.render
     options.staticRenderFns = inlineTemplate.staticRenderFns
-  }
+  } 
+  /**
+   * 这个就是组件初始化的函数，其实就是又初始化一次Vue函数
+   * 如果是组件重新执行this._init()方法
+   */
   return new vnode.componentOptions.Ctor(options)
 }
 

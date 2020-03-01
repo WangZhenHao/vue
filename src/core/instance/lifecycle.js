@@ -62,6 +62,7 @@ export function lifecycleMixin (Vue: Class<Component>) {
     const prevVnode = vm._vnode
     const restoreActiveInstance = setActiveInstance(vm)
     vm._vnode = vnode
+    
     // Vue.prototype.__patch__ is injected in entry points
     // based on the rendering backend used.
     if (!prevVnode) {
@@ -194,7 +195,7 @@ export function mountComponent (
   // we set this to vm._watcher inside the watcher's constructor
   // since the watcher's initial patch may call $forceUpdate (e.g. inside child
   // component's mounted hook), which relies on vm._watcher being already defined
-  new Watcher(vm, updateComponent, noop, {
+  var a = new Watcher(vm, updateComponent, noop, {
     before () {
       if (vm._isMounted && !vm._isDestroyed) {
         callHook(vm, 'beforeUpdate')
@@ -202,7 +203,7 @@ export function mountComponent (
     }
   }, true /* isRenderWatcher */)
   hydrating = false
-
+  console.log(a)
   // manually mounted instance, call mounted on self
   // mounted is called for render-created child components in its inserted hook
   if (vm.$vnode == null) {

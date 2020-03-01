@@ -82,6 +82,7 @@ if (process.env.NODE_ENV !== 'production') {
       const handlers = options.render && options.render._withStripped
         ? getHandler
         : hasHandler
+
       vm._renderProxy = new Proxy(vm, handlers)
     } else {
       vm._renderProxy = vm

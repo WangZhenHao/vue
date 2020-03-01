@@ -4,12 +4,35 @@ import { extend } from 'shared/util'
 import { detectErrors } from './error-detector'
 import { createCompileToFunctionFn } from './to-function'
 
+/**
+ baseCompile，实际是
+ 
+ function baseCompile (
+  template: string,
+  options: CompilerOptions
+): CompiledResult {
+  const ast = parse(template.trim(), options)
+  if (options.optimize !== false) {
+    optimize(ast, options)
+  }
+  const code = generate(ast, options)
+  
+  return {
+    ast,
+    render: code.render,
+    staticRenderFns: code.staticRenderFns
+  }
+}
+
+ */
 export function createCompilerCreator (baseCompile: Function): Function {
+
   return function createCompiler (baseOptions: CompilerOptions) {
     function compile (
       template: string,
       options?: CompilerOptions
     ): CompiledResult {
+      
       const finalOptions = Object.create(baseOptions)
       const errors = []
       const tips = []

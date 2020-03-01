@@ -47,6 +47,7 @@ export function initMixin (Vue: Class<Component>) {
     } else {
       vm._renderProxy = vm
     }
+    
     // expose real self
     vm._self = vm
     initLifecycle(vm)
@@ -64,7 +65,6 @@ export function initMixin (Vue: Class<Component>) {
       mark(endTag)
       measure(`vue ${vm._name} init`, startTag, endTag)
     }
-
     if (vm.$options.el) {
       vm.$mount(vm.$options.el)
     }
@@ -83,7 +83,6 @@ export function initInternalComponent (vm: Component, options: InternalComponent
   opts._parentListeners = vnodeComponentOptions.listeners
   opts._renderChildren = vnodeComponentOptions.children
   opts._componentTag = vnodeComponentOptions.tag
-
   if (options.render) {
     opts.render = options.render
     opts.staticRenderFns = options.staticRenderFns

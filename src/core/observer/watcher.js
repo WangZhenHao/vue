@@ -75,6 +75,7 @@ export default class Watcher {
     this.expression = process.env.NODE_ENV !== 'production'
       ? expOrFn.toString()
       : ''
+    
     // parse expression for getter
     if (typeof expOrFn === 'function') {
       this.getter = expOrFn
@@ -90,6 +91,7 @@ export default class Watcher {
         )
       }
     }
+    
     this.value = this.lazy
       ? undefined
       : this.get()

@@ -3,7 +3,6 @@
 import type Watcher from './watcher'
 import { remove } from '../util/index'
 import config from '../config'
-
 let uid = 0
 
 /**

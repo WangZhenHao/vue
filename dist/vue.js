@@ -706,7 +706,6 @@
   }
 
   /*  */
-
   var uid = 0;
 
   /**
@@ -1050,6 +1049,7 @@
         return value
       },
       set: function reactiveSetter (newVal) {
+        debugger
         var value = getter ? getter.call(obj) : val;
         /* eslint-disable no-self-compare */
         if (newVal === value || (newVal !== newVal && value !== value)) {
@@ -2112,6 +2112,7 @@
         var handlers = options.render && options.render._withStripped
           ? getHandler
           : hasHandler;
+
         vm._renderProxy = new Proxy(vm, handlers);
       } else {
         vm._renderProxy = vm;
@@ -3179,7 +3180,6 @@
     }
 
     var baseCtor = context.$options._base;
-
     // plain options object: turn it into a constructor
     if (isObject(Ctor)) {
       Ctor = baseCtor.extend(Ctor);
@@ -3262,7 +3262,6 @@
       { Ctor: Ctor, propsData: propsData, listeners: listeners, tag: tag, children: children },
       asyncFactory
     );
-
     return vnode
   }
 
@@ -3280,7 +3279,11 @@
     if (isDef(inlineTemplate)) {
       options.render = inlineTemplate.render;
       options.staticRenderFns = inlineTemplate.staticRenderFns;
-    }
+    } 
+    /**
+     * 这个就是组件初始化的函数，其实就是又初始化一次Vue函数
+     * 如果是组件重新执行this._init()方法
+     */
     return new vnode.componentOptions.Ctor(options)
   }
 
@@ -3489,7 +3492,10 @@
     // so that we get proper render context inside it.
     // args order: tag, data, children, normalizationType, alwaysNormalize
     // internal version is used by render functions compiled from templates
-    vm._c = function (a, b, c, d) { return createElement(vm, a, b, c, d, false); };
+    vm._c = function (a, b, c, d) { 
+      // "with(this){return _c('div',{attrs:{"id":"app"}},[_c('div',[_v(_s(msg))])])}"
+      return createElement(vm, a, b, c, d, false) 
+    };
     // normalization is always applied for the public version, used in
     // user-written render functions.
     vm.$createElement = function (a, b, c, d) { return createElement(vm, a, b, c, d, true); };
@@ -3519,12 +3525,20 @@
       return nextTick(fn, this)
     };
 
+    /**
+     * 通过执行_render函数
+     * 得到虚拟dom
+     * 然后执行_patch_方法中的patch函数
+     * patch函数会执行creteEle对虚拟的vonde进行解析
+     * 如果是组件，就会再执行_init()，走一次初始化，自己执行$mount方法
+     * 
+     * 
+     */
     Vue.prototype._render = function () {
       var vm = this;
       var ref = vm.$options;
       var render = ref.render;
       var _parentVnode = ref._parentVnode;
-
       if (_parentVnode) {
         vm.$scopedSlots = normalizeScopedSlots(
           _parentVnode.data.scopedSlots,
@@ -3933,6 +3947,7 @@
       var prevVnode = vm._vnode;
       var restoreActiveInstance = setActiveInstance(vm);
       vm._vnode = vnode;
+      
       // Vue.prototype.__patch__ is injected in entry points
       // based on the rendering backend used.
       if (!prevVnode) {
@@ -4065,7 +4080,7 @@
     // we set this to vm._watcher inside the watcher's constructor
     // since the watcher's initial patch may call $forceUpdate (e.g. inside child
     // component's mounted hook), which relies on vm._watcher being already defined
-    new Watcher(vm, updateComponent, noop, {
+    var a = new Watcher(vm, updateComponent, noop, {
       before: function before () {
         if (vm._isMounted && !vm._isDestroyed) {
           callHook(vm, 'beforeUpdate');
@@ -4073,7 +4088,7 @@
       }
     }, true /* isRenderWatcher */);
     hydrating = false;
-
+    console.log(a);
     // manually mounted instance, call mounted on self
     // mounted is called for render-created child components in its inserted hook
     if (vm.$vnode == null) {
@@ -4442,6 +4457,7 @@
     this.newDepIds = new _Set();
     this.expression =  expOrFn.toString()
       ;
+      
     // parse expression for getter
     if (typeof expOrFn === 'function') {
       this.getter = expOrFn;
@@ -4457,6 +4473,7 @@
         );
       }
     }
+      
     this.value = this.lazy
       ? undefined
       : this.get();
@@ -4830,6 +4847,7 @@
         if (Dep.target) {
           watcher.depend();
         }
+        
         return watcher.value
       }
     }
@@ -4935,7 +4953,9 @@
       }
       options = options || {};
       options.user = true;
+
       var watcher = new Watcher(vm, expOrFn, cb, options);
+
       if (options.immediate) {
         try {
           cb.call(vm, watcher.value);
@@ -4986,6 +5006,7 @@
       {
         initProxy(vm);
       }
+      
       // expose real self
       vm._self = vm;
       initLifecycle(vm);
@@ -5003,7 +5024,6 @@
         mark(endTag);
         measure(("vue " + (vm._name) + " init"), startTag, endTag);
       }
-
       if (vm.$options.el) {
         vm.$mount(vm.$options.el);
       }
@@ -5022,7 +5042,6 @@
     opts._parentListeners = vnodeComponentOptions.listeners;
     opts._renderChildren = vnodeComponentOptions.children;
     opts._componentTag = vnodeComponentOptions.tag;
-
     if (options.render) {
       opts.render = options.render;
       opts.staticRenderFns = options.staticRenderFns;
@@ -5846,7 +5865,6 @@
 
     var modules = backend.modules;
     var nodeOps = backend.nodeOps;
-
     for (i = 0; i < hooks.length; ++i) {
       cbs[hooks[i]] = [];
       for (j = 0; j < modules.length; ++j) {
@@ -5915,6 +5933,7 @@
       }
 
       vnode.isRootInsert = !nested; // for transition enter check
+      // 判断是否是一个组件
       if (createComponent(vnode, insertedVnodeQueue, parentElm, refElm)) {
         return
       }
@@ -6504,7 +6523,7 @@
           // replacing existing element
           var oldElm = oldVnode.elm;
           var parentElm = nodeOps.parentNode(oldElm);
-
+          
           // create new node
           createElm(
             vnode,
@@ -11661,6 +11680,14 @@
     }
   }
 
+
+  /**
+   * 编译的字符串变成可执行的函数
+   * 
+   * 类似于：
+   * new Function('with(this){return _c('div',{attrs:{"id":"app"}},[_v("\n\t\t111\n\t\t"),_c('div',[_v("222")]),_v("\n\t\t"+_s(msg)+"\n\t\t"),_c('test',[_v("333")]),_v(" "),_c('test',[_v("444")])],1)}')
+   */
+
   function createCompileToFunctionFn (compile) {
     var cache = Object.create(null);
 
@@ -11701,7 +11728,6 @@
 
       // compile
       var compiled = compile(template, options);
-
       // check compilation errors/tips
       {
         if (compiled.errors && compiled.errors.length) {
@@ -11763,12 +11789,35 @@
 
   /*  */
 
+  /**
+   baseCompile，实际是
+   
+   function baseCompile (
+    template: string,
+    options: CompilerOptions
+  ): CompiledResult {
+    const ast = parse(template.trim(), options)
+    if (options.optimize !== false) {
+      optimize(ast, options)
+    }
+    const code = generate(ast, options)
+    
+    return {
+      ast,
+      render: code.render,
+      staticRenderFns: code.staticRenderFns
+    }
+  }
+
+   */
   function createCompilerCreator (baseCompile) {
+
     return function createCompiler (baseOptions) {
       function compile (
         template,
         options
       ) {
+        
         var finalOptions = Object.create(baseOptions);
         var errors = [];
         var tips = [];
@@ -11838,6 +11887,33 @@
   // `createCompilerCreator` allows creating compilers that use alternative
   // parser/optimizer/codegen, e.g the SSR optimizing compiler.
   // Here we just export a default compiler using the default parts.
+
+  /**
+   例如：
+   template是：
+   <div id="app">
+      111
+      <div>222</div>
+      {{ msg }}
+      <test>333</test>
+      <test>444</test>
+    </div>
+
+    变成render是：
+    with(this){return _c('div',{attrs:{"id":"app"}},[_v("\n\t\t111\n\t\t"),_c('div',[_v("222")]),_v("\n\t\t"+_s(msg)+"\n\t\t"),_c('test',[_v("333")]),_v(" "),_c('test',[_v("444")])],1)}
+
+
+
+   */
+
+   /** 
+     createCompilerCreator函数执行之后，返回一个函数，还需要进一步的执行才能的到
+     {
+        compile,
+        compileToFunctions: createCompileToFunctionFn(compile)
+     }
+
+    */
   var createCompiler = createCompilerCreator(function baseCompile (
     template,
     options
@@ -11847,10 +11923,11 @@
       optimize(ast, options);
     }
     var code = generate(ast, options);
+    
     return {
       ast: ast,
       render: code.render,
-      staticRenderFns: code.staticRenderFns
+      staticRenderFns: code.staticRenderFns,
     }
   });
 
@@ -11887,7 +11964,6 @@
     hydrating
   ) {
     el = el && query(el);
-
     /* istanbul ignore if */
     if (el === document.body || el === document.documentElement) {
        warn(
@@ -11923,6 +11999,7 @@
       } else if (el) {
         template = getOuterHTML(el);
       }
+      
       if (template) {
         /* istanbul ignore if */
         if ( config.performance && mark) {
@@ -11940,14 +12017,15 @@
         var staticRenderFns = ref.staticRenderFns;
         options.render = render;
         options.staticRenderFns = staticRenderFns;
-
+        
         /* istanbul ignore if */
         if ( config.performance && mark) {
-          mark('compile end');
+          mark('compile end');  
           measure(("vue " + (this._name) + " compile"), 'compile', 'compile end');
         }
       }
     }
+    
     return mount.call(this, el, hydrating)
   };
 

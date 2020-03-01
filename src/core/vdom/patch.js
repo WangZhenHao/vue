@@ -72,7 +72,6 @@ export function createPatchFunction (backend) {
   const cbs = {}
 
   const { modules, nodeOps } = backend
-
   for (i = 0; i < hooks.length; ++i) {
     cbs[hooks[i]] = []
     for (j = 0; j < modules.length; ++j) {
@@ -141,6 +140,7 @@ export function createPatchFunction (backend) {
     }
 
     vnode.isRootInsert = !nested // for transition enter check
+    // 判断是否是一个组件
     if (createComponent(vnode, insertedVnodeQueue, parentElm, refElm)) {
       return
     }
@@ -746,7 +746,7 @@ export function createPatchFunction (backend) {
         // replacing existing element
         const oldElm = oldVnode.elm
         const parentElm = nodeOps.parentNode(oldElm)
-
+        
         // create new node
         createElm(
           vnode,
