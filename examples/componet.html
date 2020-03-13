@@ -1,10 +1,53 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
+	<script src="../dist/vue.js"></script>
 </head>
 <body>
-	
+	<div id="app">
+		<test></test>
+	</div>
+	<script>
+
+		/**
+		 * 先执行render函数，render函数中有一个_c的方法，就是创建元素节点，实质是调用
+		 * creteaElement函数
+		 * 
+		 * vue-dev/src/core/vdom/create-component.js
+		 * 中的createComponentInstanceForVnode方法执行了组件的初始化
+		 * @type {Object}
+		 */
+		var test = {
+			template: `
+				<div>
+					<h1>1</h1>
+				</div>
+			`,
+			data() {
+				return {
+					testMsg: '11111'
+				}
+			},
+			mounted() {
+			  console.log('1')	
+			}
+		}
+		
+		var app = new Vue({
+			el: '#app',
+			data: {
+				msg: 'test'
+			},
+			mounted() {
+				console.log('前1')
+			},
+			components: {
+				test
+			}
+		})
+	</script>
 </body>
 </html>

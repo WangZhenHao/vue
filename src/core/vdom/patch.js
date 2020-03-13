@@ -130,6 +130,7 @@ export function createPatchFunction (backend) {
     ownerArray,
     index
   ) {
+    debugger
     if (isDef(vnode.elm) && isDef(ownerArray)) {
       // This vnode was used in a previous render!
       // now it's used as a new node, overwriting its elm would cause
@@ -212,6 +213,7 @@ export function createPatchFunction (backend) {
     if (isDef(i)) {
       const isReactivated = isDef(vnode.componentInstance) && i.keepAlive
       if (isDef(i = i.hook) && isDef(i = i.init)) {
+        debugger
         i(vnode, false /* hydrating */)
       }
       // after calling the init hook, if the vnode is a child component

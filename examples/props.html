@@ -2,9 +2,43 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>props</title>
+	<title>Document</title>
+	<script src="../dist/vue.js"></script>
 </head>
 <body>
-	
+	<div id="app">
+		<test :title-test="msg"></test>
+	</div>
+	<script>
+		var test = {
+			props: {
+				titleTest: String,
+				detail: {
+					type: Object,
+					default() {
+						return {name: 'wzh'}
+					}
+				}
+			},
+			template: `
+				<div>
+					<span>{{ titleTest }} - {{ detail.name }}</span>
+				</div>
+			`,
+		}
+		
+		var app = new Vue({
+			el: '#app',
+			data: {
+				msg: '你好啊'
+			},
+			mounted() {
+				console.log('前1')
+			},
+			components: {
+				test
+			}
+		})
+	</script>
 </body>
 </html>

@@ -3175,6 +3175,7 @@
     children,
     tag
   ) {
+    
     if (isUndef(Ctor)) {
       return
     }
@@ -3364,6 +3365,7 @@
     children,
     normalizationType
   ) {
+    
     if (isDef(data) && isDef((data).__ob__)) {
        warn(
         "Avoid using observed data object as vnode data: " + (JSON.stringify(data)) + "\n" +
@@ -4661,6 +4663,7 @@
   }
 
   function initProps (vm, propsOptions) {
+    
     var propsData = vm.$options.propsData || {};
     var props = vm._props = {};
     // cache prop keys so that future props updates can iterate using Array
@@ -4989,6 +4992,7 @@
 
       // a flag to avoid this being observed
       vm._isVue = true;
+
       // merge options
       if (options && options._isComponent) {
         // optimize internal component instantiation
@@ -5923,6 +5927,7 @@
       ownerArray,
       index
     ) {
+      debugger
       if (isDef(vnode.elm) && isDef(ownerArray)) {
         // This vnode was used in a previous render!
         // now it's used as a new node, overwriting its elm would cause
@@ -5987,6 +5992,7 @@
       if (isDef(i)) {
         var isReactivated = isDef(vnode.componentInstance) && i.keepAlive;
         if (isDef(i = i.hook) && isDef(i = i.init)) {
+          debugger
           i(vnode, false /* hydrating */);
         }
         // after calling the init hook, if the vnode is a child component
