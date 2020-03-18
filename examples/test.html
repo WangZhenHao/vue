@@ -10,34 +10,25 @@
 		<test></test><test></test>
 	</div>
 	<script>
-		var test = {
-			template: `
-				<div>
-					<h1>1</h1><h2>2</h2>{{testMsg}}
-				</div>
-			`,
-			data() {
-				return {
-					testMsg: '11111'
-				}
-			},
-			mounted() {
-			  console.log('1')	
-			}
+		var Test2;
+		function Test() {
+			this.options = {}
+			// console.log(this)
 		}
-		
-		var app = new Vue({
-			el: '#app',
-			data: {
-				msg: 'test'
-			},
-			mounted() {
-				console.log('前1')
-			},
-			components: {
-				test
-			}
-		})
+		Test.prototype.show = function() {
+			this.a = 12121
+			console.log(this)
+		}
+
+		Test.extends = function() {
+			Test2 = this;
+		}
+
+		var a = new Test();
+		Test.extends();
+		// a.show();
+		var b = new Test2();
+		b.show();
 	</script>
 </body>
 </html>

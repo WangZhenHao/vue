@@ -28,7 +28,6 @@ export function initMixin (Vue: Class<Component>) {
 
     // a flag to avoid this being observed
     vm._isVue = true
-
     // merge options
     if (options && options._isComponent) {
       // optimize internal component instantiation
@@ -42,6 +41,7 @@ export function initMixin (Vue: Class<Component>) {
         vm
       )
     }
+
     /* istanbul ignore else */
     if (process.env.NODE_ENV !== 'production') {
       initProxy(vm)

@@ -1,6 +1,7 @@
 /* @flow */
 
 import config from '../config'
+
 import Watcher from '../observer/watcher'
 import Dep, { pushTarget, popTarget } from '../observer/dep'
 import { isUpdatingChildComponent } from './lifecycle'
@@ -27,6 +28,7 @@ import {
   isServerRendering,
   isReservedAttribute
 } from '../util/index'
+
 
 const sharedPropertyDefinition = {
   enumerable: true,
@@ -60,8 +62,8 @@ export function initState (vm: Component) {
     initWatch(vm, opts.watch)
   }
 }
-
 function initProps (vm: Component, propsOptions: Object) {
+  // debugger
   
   const propsData = vm.$options.propsData || {}
   const props = vm._props = {}
@@ -73,8 +75,10 @@ function initProps (vm: Component, propsOptions: Object) {
   if (!isRoot) {
     toggleObserving(false)
   }
+  
   for (const key in propsOptions) {
     keys.push(key)
+    // debugger
     const value = validateProp(key, propsOptions, propsData, vm)
     /* istanbul ignore else */
     if (process.env.NODE_ENV !== 'production') {

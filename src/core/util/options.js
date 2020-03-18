@@ -326,6 +326,7 @@ function normalizeProps (options: Object, vm: ?Component) {
       vm
     )
   }
+  
   options.props = res
 }
 

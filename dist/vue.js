@@ -177,6 +177,7 @@
     return str.replace(camelizeRE, function (_, c) { return c ? c.toUpperCase() : ''; })
   });
 
+
   /**
    * Capitalize a string.
    */
@@ -627,7 +628,7 @@
 
     warn = function (msg, vm) {
       var trace = vm ? generateComponentTrace(vm) : '';
-
+      
       if (config.warnHandler) {
         config.warnHandler.call(null, msg, vm, trace);
       } else if (hasConsole && (!config.silent)) {
@@ -1049,7 +1050,6 @@
         return value
       },
       set: function reactiveSetter (newVal) {
-        debugger
         var value = getter ? getter.call(obj) : val;
         /* eslint-disable no-self-compare */
         if (newVal === value || (newVal !== newVal && value !== value)) {
@@ -1461,6 +1461,7 @@
         vm
       );
     }
+    
     options.props = res;
   }
 
@@ -1605,13 +1606,14 @@
   /*  */
 
 
-
+  // /Users/apple/testwork/gitHubProject/vue-dev/src/core/util/props.js
   function validateProp (
     key,
     propOptions,
     propsData,
     vm
   ) {
+    
     var prop = propOptions[key];
     var absent = !hasOwn(propsData, key);
     var value = propsData[key];
@@ -1640,6 +1642,7 @@
       toggleObserving(prevShouldObserve);
     }
     {
+      
       assertProp(prop, key, value, vm, absent);
     }
     return value
@@ -1688,6 +1691,7 @@
     vm,
     absent
   ) {
+    
     if (prop.required && absent) {
       warn(
         'Missing required prop: "' + name + '"',
@@ -1706,6 +1710,7 @@
         type = [type];
       }
       for (var i = 0; i < type.length && !valid; i++) {
+        
         var assertedType = assertType(value, type[i]);
         expectedTypes.push(assertedType.expectedType || '');
         valid = assertedType.valid;
@@ -3047,7 +3052,9 @@
     var props = {};
     var propOptions = options.props;
     if (isDef(propOptions)) {
+
       for (var key in propOptions) {
+        debugger
         props[key] = validateProp(key, propOptions, propsData || emptyObject);
       }
     } else {
@@ -3124,6 +3131,7 @@
     prepatch: function prepatch (oldVnode, vnode) {
       var options = vnode.componentOptions;
       var child = vnode.componentInstance = oldVnode.componentInstance;
+      
       updateChildComponent(
         child,
         options.propsData, // updated props
@@ -3175,7 +3183,6 @@
     children,
     tag
   ) {
-    
     if (isUndef(Ctor)) {
       return
     }
@@ -3285,6 +3292,7 @@
      * 这个就是组件初始化的函数，其实就是又初始化一次Vue函数
      * 如果是组件重新执行this._init()方法
      */
+    
     return new vnode.componentOptions.Ctor(options)
   }
 
@@ -4629,6 +4637,7 @@
 
   /*  */
 
+
   var sharedPropertyDefinition = {
     enumerable: true,
     configurable: true,
@@ -4661,8 +4670,8 @@
       initWatch(vm, opts.watch);
     }
   }
-
   function initProps (vm, propsOptions) {
+    // debugger
     
     var propsData = vm.$options.propsData || {};
     var props = vm._props = {};
@@ -4674,8 +4683,10 @@
     if (!isRoot) {
       toggleObserving(false);
     }
+    
     var loop = function ( key ) {
       keys.push(key);
+      // debugger
       var value = validateProp(key, propsOptions, propsData, vm);
       /* istanbul ignore else */
       {
@@ -4992,7 +5003,6 @@
 
       // a flag to avoid this being observed
       vm._isVue = true;
-
       // merge options
       if (options && options._isComponent) {
         // optimize internal component instantiation
@@ -5006,6 +5016,7 @@
           vm
         );
       }
+
       /* istanbul ignore else */
       {
         initProxy(vm);
@@ -5136,6 +5147,8 @@
   }
 
   /*  */
+
+  // /Users/apple/testwork/gitHubProject/vue-dev/src/core/global-api/extend.js
 
   function initExtend (Vue) {
     /**
@@ -5927,7 +5940,6 @@
       ownerArray,
       index
     ) {
-      debugger
       if (isDef(vnode.elm) && isDef(ownerArray)) {
         // This vnode was used in a previous render!
         // now it's used as a new node, overwriting its elm would cause
@@ -5992,7 +6004,6 @@
       if (isDef(i)) {
         var isReactivated = isDef(vnode.componentInstance) && i.keepAlive;
         if (isDef(i = i.hook) && isDef(i = i.init)) {
-          debugger
           i(vnode, false /* hydrating */);
         }
         // after calling the init hook, if the vnode is a child component
@@ -6332,8 +6343,10 @@
         for (i = 0; i < cbs.update.length; ++i) { cbs.update[i](oldVnode, vnode); }
         if (isDef(i = data.hook) && isDef(i = i.update)) { i(oldVnode, vnode); }
       }
+
       if (isUndef(vnode.text)) {
         if (isDef(oldCh) && isDef(ch)) {
+          debugger
           if (oldCh !== ch) { updateChildren(elm, oldCh, ch, insertedVnodeQueue, removeOnly); }
         } else if (isDef(ch)) {
           {

@@ -6,25 +6,52 @@
 	<script src="../dist/vue.js"></script>
 </head>
 <body>
+
 	<div id="app">
 		<test :title-test="msg"></test>
 	</div>
 	<script>
+		/**
+		 * props初始化：
+		 * 1：props只会出现在子组件中
+		 * 2：会执行组件初始化，Vue.extends方法，来合并配置
+		 * 3：在合并配置mergeOptions方法中会对props参数做一次标准化操作，1: 变成驼峰命名 2：处理成json格式{type: ....}
+		 * 4：在执行一系列的初始化中执行initState方法，其中有一个initProps方法
+		 * 5：initProps方法会对props参数做一次校验：1：类型校验 2：是否使用保留字 
+		 * 6: 使用defineReactive方法，把props里面的参数设置成响应式，并且在set方法中
+		 * 添加了格外的一个函数如果对props的值进行了set操作，就会捕获错误，现在终端
+		 *
+		 * props更新：
+		 * 1：父组件更新数据的时候，就会执行patch方法
+		 * 2：会执行patchVnode方法中的updateChildren
+		 * @type {Object}
+		 */
 		var test = {
 			props: {
-				titleTest: String,
+				titleTest: {
+					type: String
+				},
 				detail: {
 					type: Object,
 					default() {
 						return {name: 'wzh'}
 					}
+				},
+				'order-detail': '1111'
+			},
+			data() {
+				return {
+					childCompoents: '1212'
 				}
 			},
 			template: `
-				<div>
+				<p>
 					<span>{{ titleTest }} - {{ detail.name }}</span>
-				</div>
+				</p>
 			`,
+			mounted() {
+				
+			}
 		}
 		
 		var app = new Vue({
@@ -33,7 +60,9 @@
 				msg: '你好啊'
 			},
 			mounted() {
-				console.log('前1')
+				setTimeout(() => {
+					this.msg = {a: '1212'}
+				}, 2000)
 			},
 			components: {
 				test

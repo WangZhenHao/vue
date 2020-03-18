@@ -166,6 +166,7 @@ export const camelize = cached((str: string): string => {
   return str.replace(camelizeRE, (_, c) => c ? c.toUpperCase() : '')
 })
 
+
 /**
  * Capitalize a string.
  */

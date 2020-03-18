@@ -17,13 +17,14 @@ type PropOptions = {
   required: ?boolean,
   validator: ?Function
 };
-
+// /Users/apple/testwork/gitHubProject/vue-dev/src/core/util/props.js
 export function validateProp (
   key: string,
   propOptions: Object,
   propsData: Object,
   vm?: Component
 ): any {
+  
   const prop = propOptions[key]
   const absent = !hasOwn(propsData, key)
   let value = propsData[key]
@@ -56,6 +57,7 @@ export function validateProp (
     // skip validation for weex recycle-list child component props
     !(__WEEX__ && isObject(value) && ('@binding' in value))
   ) {
+    
     assertProp(prop, key, value, vm, absent)
   }
   return value
@@ -104,6 +106,7 @@ function assertProp (
   vm: ?Component,
   absent: boolean
 ) {
+  
   if (prop.required && absent) {
     warn(
       'Missing required prop: "' + name + '"',
@@ -122,6 +125,7 @@ function assertProp (
       type = [type]
     }
     for (let i = 0; i < type.length && !valid; i++) {
+      
       const assertedType = assertType(value, type[i])
       expectedTypes.push(assertedType.expectedType || '')
       valid = assertedType.valid

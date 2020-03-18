@@ -55,6 +55,7 @@ const componentVNodeHooks = {
   prepatch (oldVnode: MountedComponentVNode, vnode: MountedComponentVNode) {
     const options = vnode.componentOptions
     const child = vnode.componentInstance = oldVnode.componentInstance
+    
     updateChildComponent(
       child,
       options.propsData, // updated props
@@ -105,7 +106,6 @@ export function createComponent (
   children: ?Array<VNode>,
   tag?: string
 ): VNode | Array<VNode> | void {
-  
   if (isUndef(Ctor)) {
     return
   }
@@ -223,6 +223,7 @@ export function createComponentInstanceForVnode (
    * 这个就是组件初始化的函数，其实就是又初始化一次Vue函数
    * 如果是组件重新执行this._init()方法
    */
+  
   return new vnode.componentOptions.Ctor(options)
 }
 
