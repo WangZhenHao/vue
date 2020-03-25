@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="../dist/vue.js"></script>
+</head>
+<body>
+
+	<div id="app">
+		 <div>{{ msg }}</div>
+	</div>
+	<script>
+		/**
+		 * 把vnode渲染成正式dom
+		 */
+		var app = new Vue({
+			el: '#app',
+			data: {
+				msg: '000', 
+			},
+			
+			mounted() {
+				
+			},
+		})
+	</script>
+</body>
+</html>
