@@ -140,7 +140,6 @@ export function defineReactive (
   shallow?: boolean
 ) {
   const dep = new Dep()
-
   const property = Object.getOwnPropertyDescriptor(obj, key)
   if (property && property.configurable === false) {
     return

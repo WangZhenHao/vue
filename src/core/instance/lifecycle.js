@@ -65,6 +65,7 @@ export function lifecycleMixin (Vue: Class<Component>) {
     
     // Vue.prototype.__patch__ is injected in entry points
     // based on the rendering backend used.
+    
     if (!prevVnode) {
       // initial render
       vm.$el = vm.__patch__(vm.$el, vnode, hydrating, false /* removeOnly */)
@@ -166,7 +167,6 @@ export function mountComponent (
     }
   }
   callHook(vm, 'beforeMount')
-
   let updateComponent
   /* istanbul ignore if */
   if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
@@ -269,6 +269,11 @@ export function updateChildComponent (
     for (let i = 0; i < propKeys.length; i++) {
       const key = propKeys[i]
       const propOptions: any = vm.$options.props // wtf flow?
+      /** 
+       如果父组件的数据发生变化了，就会修改子组件的this._props里面的值
+       this._props如果被修改了，就会出发触发wather, 更新数据
+
+      */
       props[key] = validateProp(key, propOptions, propsData, vm)
     }
     toggleObserving(true)

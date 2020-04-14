@@ -6,29 +6,22 @@
 	<script src="../dist/vue.js"></script>
 </head>
 <body>
-	<div id="app">
-		<test></test><test></test>
-	</div>
+	
 	<script>
-		var Test2;
-		function Test() {
-			this.options = {}
-			// console.log(this)
-		}
-		Test.prototype.show = function() {
-			this.a = 12121
-			console.log(this)
-		}
+		function test() {
+			this.a = 1;
+			this.b = 2;
+			this.c = 3;
+			this.d = 4;
 
-		Test.extends = function() {
-			Test2 = this;
+			if(!(this instanceof test)) {
+				return new test();
+			}
 		}
+		// var test = {name: 1, age: 12, address: '说法萨芬士大夫手动阀手动阀', value: 2, tes: 32, a: 23, b: 32, c: 23}
 
-		var a = new Test();
-		Test.extends();
-		// a.show();
-		var b = new Test2();
-		b.show();
+    var arr = [test(), test(), test()]
+		debugger
 	</script>
 </body>
 </html>

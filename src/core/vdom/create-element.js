@@ -33,6 +33,7 @@ export function createElement (
   normalizationType: any,
   alwaysNormalize: boolean
 ): VNode | Array<VNode> {
+
   if (Array.isArray(data) || isPrimitive(data)) {
     normalizationType = children
     children = data

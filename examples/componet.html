@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,10 +7,10 @@
 </head>
 <body>
 	<div id="app">
-		<test></test>
+		<test :msg="msg"></test>
 	</div>
 	<script>
-
+    
 		/**
 		 * 先执行render函数，render函数中有一个_c的方法，就是创建元素节点，实质是调用
 		 * creteaElement函数
@@ -20,29 +19,40 @@
 		 * 中的createComponentInstanceForVnode方法执行了组件的初始化
 		 * @type {Object}
 		 */
+		/**
+		 (function anonymous(
+			) {
+			  with(this){return _c('div',{attrs:{"id":"app"}},[_c('test')],1)}
+			})
+
+		 */
 		var test = {
+			props: ['msg'],
 			template: `
 				<div>
-					<h1>1</h1>
+					<h1>{{ msg }}</h1>
 				</div>
 			`,
 			data() {
 				return {
-					testMsg: '11111'
+					
 				}
 			},
 			mounted() {
-			  console.log('1')	
+			  // console.log('1')	
 			}
 		}
 		
 		var app = new Vue({
 			el: '#app',
 			data: {
-				msg: 'test'
+				msg: '1111'
 			},
 			mounted() {
-				console.log('前1')
+				// console.log('前1')
+				setTimeout(() => {
+					this.msg = '2222'
+				}, 2000)
 			},
 			components: {
 				test

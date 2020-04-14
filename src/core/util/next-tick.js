@@ -97,6 +97,7 @@ export function nextTick (cb?: Function, ctx?: Object) {
       _resolve(ctx)
     }
   })
+  
   if (!pending) {
     pending = true
     timerFunc()

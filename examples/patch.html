@@ -8,21 +8,85 @@
 <body>
 
 	<div id="app">
-		 <div>{{ msg }}</div>
+		<div id="test" @click="changed" class="page" :class="{'changed': show}">11111</div>
+		<!-- <li 
+		  v-for="item in list" 
+		  :class="{'active': item.id == 0}"
+		  :key="item.id"
+		>{{ item.name }}</li> -->
+		<!-- <p v-if="show">{{ msg2 }}</p><div v-else>{{ msg3 }}</div> -->
 	</div>
 	<script>
 		/**
-		 * 把vnode渲染成正式dom
+		  1：生成虚拟vnode，执行patch方法，如果发现是一个正式dom
+		  就是属于初次渲染，直接执行createElm,递归执行createElm，最后执行插入到body里面
+
+	   2： 如果data发生了改变，就会触发render函数执行，重新渲染生成新的vnode
+	   2-1: 这时候把oldvnode,和newVnode传入到patch方法里面，执行patchVnode方法
+	   2-2： 判断vnode有没有设置了style,class,等属性，如果有就执行update方法去更新
+	   2-3：判断vnode有没有子vnode和是否有vnode有没有text值，然后执行updateChildren
+	   2-4: updateChildre接受oldVnode和newVnode数组，通过while循环去vnode是否相同，
+	   1）如果相同，就调用patchVnode判断需要需要更新属性值和文本，
+     2）通过循环的对比，vue会尽可能的复用原来的oldnode。
+     3) 循环结束之后，如果新vnode个数比旧vnode个数多，就会就会新增节点，如果新vnode个数比旧vnode个数少
+     就回去删除旧的节点
+	  
+	  diff算法比较复杂，很多的细节
 		 */
+		 
+		 /**
+		  如何渲染组件vnode
+
+		  */
+		/**
+		实际dom为： 
+		<div id="app">
+			<p>{{ msg1 }}</p>
+			<p v-if="show">{{ msg2 }}</p>
+		<div>
+		(function anonymous(
+		) {
+		   with(this){return _c('div',{attrs:{"id":"app"}},[_c('p',[_v(_s(msg1))]),_v(" "),(show)?_c('p',[_v(_s(msg2))]):_e()])}
+		})
+		*/
 		var app = new Vue({
 			el: '#app',
 			data: {
-				msg: '000', 
+				msg1: '111',
+				msg2: '222' ,
+				msg3: '333',
+				show: false,
+				list: [
+					{ id: 1, name: '1' },
+					// { id: 2,  name: '2'},
+					// { id: 3, name: '3' }
+				]
 			},
-			
 			mounted() {
-				
+        this.el = document.querySelector('#test');
+        this.el.className += ' page-show'
+			  // setTimeout(() => {
+			  	// this.show = true
+			  	// this.list.splice(1, 0, {id: 4, name: 4})
+			  	// this.list.reverse()
+			  	// this.list = [
+			  	//   { id: 2, name: '2' },
+			  	// 	{ id: 4, name: '4' },
+			  	//   { id: 5, name: '5' }
+			  	// ]
+			  // }, 3000)
+
 			},
+			methods: {
+				changed() {
+					this.show = true;
+					console.log(this.el.className)
+
+					setTimeout(() => {
+						console.log(this.el.className)
+					}, 0)
+				}
+			}
 		})
 	</script>
 </body>

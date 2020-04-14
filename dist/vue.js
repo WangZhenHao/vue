@@ -1019,7 +1019,6 @@
     shallow
   ) {
     var dep = new Dep();
-
     var property = Object.getOwnPropertyDescriptor(obj, key);
     if (property && property.configurable === false) {
       return
@@ -2001,6 +2000,7 @@
         _resolve(ctx);
       }
     });
+    
     if (!pending) {
       pending = true;
       timerFunc();
@@ -3054,7 +3054,6 @@
     if (isDef(propOptions)) {
 
       for (var key in propOptions) {
-        debugger
         props[key] = validateProp(key, propOptions, propsData || emptyObject);
       }
     } else {
@@ -3186,7 +3185,7 @@
     if (isUndef(Ctor)) {
       return
     }
-
+    
     var baseCtor = context.$options._base;
     // plain options object: turn it into a constructor
     if (isObject(Ctor)) {
@@ -3264,6 +3263,7 @@
 
     // return a placeholder vnode
     var name = Ctor.options.name || tag;
+    
     var vnode = new VNode(
       ("vue-component-" + (Ctor.cid) + (name ? ("-" + name) : '')),
       data, undefined, undefined, undefined, context,
@@ -3355,6 +3355,7 @@
     normalizationType,
     alwaysNormalize
   ) {
+
     if (Array.isArray(data) || isPrimitive(data)) {
       normalizationType = children;
       children = data;
@@ -3556,7 +3557,7 @@
           vm.$scopedSlots
         );
       }
-
+      
       // set parent vnode. this allows render functions to have access
       // to the data on the placeholder node.
       vm.$vnode = _parentVnode;
@@ -3960,6 +3961,7 @@
       
       // Vue.prototype.__patch__ is injected in entry points
       // based on the rendering backend used.
+      
       if (!prevVnode) {
         // initial render
         vm.$el = vm.__patch__(vm.$el, vnode, hydrating, false /* removeOnly */);
@@ -4061,7 +4063,6 @@
       }
     }
     callHook(vm, 'beforeMount');
-
     var updateComponent;
     /* istanbul ignore if */
     if ( config.performance && mark) {
@@ -4164,6 +4165,11 @@
       for (var i = 0; i < propKeys.length; i++) {
         var key = propKeys[i];
         var propOptions = vm.$options.props; // wtf flow?
+        /** 
+         如果父组件的数据发生变化了，就会修改子组件的this._props里面的值
+         this._props如果被修改了，就会出发触发wather, 更新数据
+
+        */
         props[key] = validateProp(key, propOptions, propsData, vm);
       }
       toggleObserving(true);
@@ -4556,7 +4562,7 @@
    * Will be called when a dependency changes.
    */
   Watcher.prototype.update = function update () {
-    /* istanbul ignore else */
+      /* istanbul ignore else */
     if (this.lazy) {
       this.dirty = true;
     } else if (this.sync) {
@@ -5182,10 +5188,12 @@
       Sub.prototype = Object.create(Super.prototype);
       Sub.prototype.constructor = Sub;
       Sub.cid = cid++;
+      // console.log(Sub.options)
       Sub.options = mergeOptions(
         Super.options,
         extendOptions
       );
+      console.log(Super.options, extendOptions);
       Sub['super'] = Super;
 
       // For props and computed properties, we define the proxy getters on
@@ -5825,18 +5833,6 @@
     }
   }
 
-  /**
-   * Virtual DOM patching algorithm based on Snabbdom by
-   * Simon Friis Vindum (@paldepind)
-   * Licensed under the MIT License
-   * https://github.com/paldepind/snabbdom/blob/master/LICENSE
-   *
-   * modified by Evan You (@yyx990803)
-   *
-   * Not type-checking this because this file is perf-critical and the cost
-   * of making flow understand it is not worth it.
-   */
-
   var emptyNode = new VNode('', {}, []);
 
   var hooks = ['create', 'activate', 'update', 'remove', 'destroy'];
@@ -5877,11 +5873,13 @@
   }
 
   function createPatchFunction (backend) {
+
     var i, j;
     var cbs = {};
 
     var modules = backend.modules;
     var nodeOps = backend.nodeOps;
+    
     for (i = 0; i < hooks.length; ++i) {
       cbs[hooks[i]] = [];
       for (j = 0; j < modules.length; ++j) {
@@ -5959,6 +5957,7 @@
       var children = vnode.children;
       var tag = vnode.tag;
       if (isDef(tag)) {
+
         {
           if (data && data.pre) {
             creatingElmInVPre++;
@@ -5973,13 +5972,15 @@
           }
         }
 
+       
         vnode.elm = vnode.ns
           ? nodeOps.createElementNS(vnode.ns, tag)
           : nodeOps.createElement(tag, vnode);
         setScope(vnode);
-
+        
         /* istanbul ignore if */
         {
+
           createChildren(vnode, children, insertedVnodeQueue);
           if (isDef(data)) {
             invokeCreateHooks(vnode, insertedVnodeQueue);
@@ -6260,7 +6261,11 @@
       if (oldStartIdx > oldEndIdx) {
         refElm = isUndef(newCh[newEndIdx + 1]) ? null : newCh[newEndIdx + 1].elm;
         addVnodes(parentElm, refElm, newCh, newStartIdx, newEndIdx, insertedVnodeQueue);
-      } else if (newStartIdx > newEndIdx) {
+      } else if (newStartIdx > newEndIdx) { //新增了一个
+        /**
+         <p v-if="vIf">111</p><div v-else>11</div>
+        这个情况发生的时候，就生成一个dom，然后remove旧dom
+         */
         removeVnodes(oldCh, oldStartIdx, oldEndIdx);
       }
     }
@@ -6298,6 +6303,7 @@
       index,
       removeOnly
     ) {
+      
       if (oldVnode === vnode) {
         return
       }
@@ -6346,8 +6352,9 @@
 
       if (isUndef(vnode.text)) {
         if (isDef(oldCh) && isDef(ch)) {
-          debugger
-          if (oldCh !== ch) { updateChildren(elm, oldCh, ch, insertedVnodeQueue, removeOnly); }
+          if (oldCh !== ch) {
+            updateChildren(elm, oldCh, ch, insertedVnodeQueue, removeOnly);
+          }
         } else if (isDef(ch)) {
           {
             checkDuplicateKeys(ch);
@@ -6825,6 +6832,9 @@
   /*  */
 
   function updateClass (oldVnode, vnode) {
+    /**
+     应为在执行patchVnode的时候已经对参数oldVnode和vnode了，实际上vnode.el = oldVnode.el
+     */
     var el = vnode.elm;
     var data = vnode.data;
     var oldData = oldVnode.data;
@@ -6839,7 +6849,7 @@
     ) {
       return
     }
-
+    
     var cls = genClassForVnode(vnode);
 
     // handle transition classes
@@ -8483,7 +8493,6 @@
   // the directive module should be applied last, after all
   // built-in modules have been applied.
   var modules = platformModules.concat(baseModules);
-
   var patch = createPatchFunction({ nodeOps: nodeOps, modules: modules });
 
   /**
@@ -12024,7 +12033,7 @@
         if ( config.performance && mark) {
           mark('compile');
         }
-
+        
         var ref = compileToFunctions(template, {
           outputSourceRange: "development" !== 'production',
           shouldDecodeNewlines: shouldDecodeNewlines,
@@ -12036,7 +12045,6 @@
         var staticRenderFns = ref.staticRenderFns;
         options.render = render;
         options.staticRenderFns = staticRenderFns;
-        
         /* istanbul ignore if */
         if ( config.performance && mark) {
           mark('compile end');  

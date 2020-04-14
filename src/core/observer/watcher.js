@@ -164,7 +164,7 @@ export default class Watcher {
    * Will be called when a dependency changes.
    */
   update () {
-    /* istanbul ignore else */
+      /* istanbul ignore else */
     if (this.lazy) {
       this.dirty = true
     } else if (this.sync) {

@@ -38,10 +38,12 @@ export function initExtend (Vue: GlobalAPI) {
     Sub.prototype = Object.create(Super.prototype)
     Sub.prototype.constructor = Sub
     Sub.cid = cid++
+    // console.log(Sub.options)
     Sub.options = mergeOptions(
       Super.options,
       extendOptions
     )
+    console.log(Super.options, extendOptions)
     Sub['super'] = Super
 
     // For props and computed properties, we define the proxy getters on

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="../dist/vue.js"></script>
+</head>
+<body>
+	<div id="app">
+		 <div>msg: {{ msg1 }}</div>
+	</div>
+	<script>
+		var app = new Vue({
+			el: '#app',
+			data: {
+				msg: '000',
+			},
+			computed: {
+				msg1() {
+					console.log(newVal, oldVal)
+					return this.msg
+				}
+			},
+			mounted() {
+				
+			},
+		})
+	</script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="../dist/vue.js"></script>
+</head>
+<body>
+
+	<div id="app">
+		 <ul>
+		 	<li v-for="item in list" :key="item.name">{{ item.name }}</li>
+		 </ul>
+		 <div v-show="vShow">1111</div>
+		 <div v-if="vIf">222</div>
+		 <div v-else-if="vElseIf">333</div>
+		 <div v-else>4444</div>
+		 <div 
+		  :style="{'background': background}" 
+		  :class="{'active-class': activeClass}"
+		 >444</div>
+     <div class="active-class" style="background: red">555</div>
+	</div>
+	<script>
+		/**
+		with(this) {
+    return _c('div', {
+        attrs: {
+            "id": "app"
+        }
+    }, [_c('ul', _l((list), function (item) {
+        return _c('li', {
+            key: item.name
+        }, [_v(_s(item.name))])
+    }), 0), _v(" "), _c('div', {
+        directives: [{
+            name: "show",
+            rawName: "v-show",
+            value: (vShow),
+            expression: "vShow"
+        }]
+    }, [_v("1111")]), _v(" "), (vIf) ? _c('div', [_v("222")]) : (vElseIf) ? _c('div', [_v("333")]) : _c('div', [_v("4444")]), _v(" "), _c('div', {
+        class: {
+            'active-class': activeClass
+        },
+        style: ({
+            'background': background
+        })
+    }, [_v("444")]), _v(" "), _c('div', {
+        staticClass: "active-class",
+        staticStyle: {
+            "background": "red"
+        }
+    }, [_v("555")])])
+}
+		*/
+		var app = new Vue({
+			el: '#app',
+			data: {
+				vShow: true,
+				vIf: true,
+				vElseIf: true,
+				activeClass: true,
+				background: 'red',
+				list: [
+				  { name: 'wzh' },
+				  { name: 'xm' }
+				]
+			},
+			mounted() {
+			  
+			},
+		})
+	</script>
+</body>
+</html>

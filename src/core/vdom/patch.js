@@ -1,3 +1,4 @@
+
 /**
  * Virtual DOM patching algorithm based on Snabbdom by
  * Simon Friis Vindum (@paldepind)
@@ -68,10 +69,12 @@ function createKeyToOldIdx (children, beginIdx, endIdx) {
 }
 
 export function createPatchFunction (backend) {
+
   let i, j
   const cbs = {}
 
   const { modules, nodeOps } = backend
+  
   for (i = 0; i < hooks.length; ++i) {
     cbs[hooks[i]] = []
     for (j = 0; j < modules.length; ++j) {
@@ -149,6 +152,7 @@ export function createPatchFunction (backend) {
     const children = vnode.children
     const tag = vnode.tag
     if (isDef(tag)) {
+
       if (process.env.NODE_ENV !== 'production') {
         if (data && data.pre) {
           creatingElmInVPre++
@@ -163,11 +167,12 @@ export function createPatchFunction (backend) {
         }
       }
 
+     
       vnode.elm = vnode.ns
         ? nodeOps.createElementNS(vnode.ns, tag)
         : nodeOps.createElement(tag, vnode)
       setScope(vnode)
-
+      
       /* istanbul ignore if */
       if (__WEEX__) {
         // in Weex, the default insertion order is parent-first.
@@ -188,6 +193,7 @@ export function createPatchFunction (backend) {
           insert(parentElm, vnode.elm, refElm)
         }
       } else {
+
         createChildren(vnode, children, insertedVnodeQueue)
         if (isDef(data)) {
           invokeCreateHooks(vnode, insertedVnodeQueue)
@@ -468,7 +474,11 @@ export function createPatchFunction (backend) {
     if (oldStartIdx > oldEndIdx) {
       refElm = isUndef(newCh[newEndIdx + 1]) ? null : newCh[newEndIdx + 1].elm
       addVnodes(parentElm, refElm, newCh, newStartIdx, newEndIdx, insertedVnodeQueue)
-    } else if (newStartIdx > newEndIdx) {
+    } else if (newStartIdx > newEndIdx) { //新增了一个
+      /**
+       <p v-if="vIf">111</p><div v-else>11</div>
+      这个情况发生的时候，就生成一个dom，然后remove旧dom
+       */
       removeVnodes(oldCh, oldStartIdx, oldEndIdx)
     }
   }
@@ -506,6 +516,7 @@ export function createPatchFunction (backend) {
     index,
     removeOnly
   ) {
+    
     if (oldVnode === vnode) {
       return
     }
@@ -554,8 +565,9 @@ export function createPatchFunction (backend) {
 
     if (isUndef(vnode.text)) {
       if (isDef(oldCh) && isDef(ch)) {
-        debugger
-        if (oldCh !== ch) updateChildren(elm, oldCh, ch, insertedVnodeQueue, removeOnly)
+        if (oldCh !== ch) {
+          updateChildren(elm, oldCh, ch, insertedVnodeQueue, removeOnly)
+        }
       } else if (isDef(ch)) {
         if (process.env.NODE_ENV !== 'production') {
           checkDuplicateKeys(ch)

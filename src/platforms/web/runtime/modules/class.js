@@ -12,6 +12,9 @@ import {
 } from 'web/util/index'
 
 function updateClass (oldVnode: any, vnode: any) {
+  /**
+   应为在执行patchVnode的时候已经对参数oldVnode和vnode了，实际上vnode.el = oldVnode.el
+   */
   const el = vnode.elm
   const data: VNodeData = vnode.data
   const oldData: VNodeData = oldVnode.data
@@ -26,7 +29,7 @@ function updateClass (oldVnode: any, vnode: any) {
   ) {
     return
   }
-
+  
   let cls = genClassForVnode(vnode)
 
   // handle transition classes

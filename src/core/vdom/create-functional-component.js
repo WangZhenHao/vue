@@ -104,7 +104,6 @@ export function createFunctionalComponent (
   if (isDef(propOptions)) {
 
     for (const key in propOptions) {
-      debugger
       props[key] = validateProp(key, propOptions, propsData || emptyObject)
     }
   } else {

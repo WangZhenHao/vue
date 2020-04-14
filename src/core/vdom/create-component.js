@@ -109,7 +109,7 @@ export function createComponent (
   if (isUndef(Ctor)) {
     return
   }
-
+  
   const baseCtor = context.$options._base
   // plain options object: turn it into a constructor
   if (isObject(Ctor)) {
@@ -187,6 +187,7 @@ export function createComponent (
 
   // return a placeholder vnode
   const name = Ctor.options.name || tag
+  
   const vnode = new VNode(
     `vue-component-${Ctor.cid}${name ? `-${name}` : ''}`,
     data, undefined, undefined, undefined, context,

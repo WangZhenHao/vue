@@ -88,7 +88,7 @@ export function renderMixin (Vue: Class<Component>) {
         vm.$scopedSlots
       )
     }
-
+    
     // set parent vnode. this allows render functions to have access
     // to the data on the placeholder node.
     vm.$vnode = _parentVnode
