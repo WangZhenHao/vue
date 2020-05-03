@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="../dist/vue.js"></script>
+</head>
+<body>
+	<div id="app">
+		 <button 
+		   :class="{'active-class': test}"
+		   @click="clickMe($event, msg)"
+		  >点击我</button>
+		 <h1>{{ msg }}</h1>
+	</div>
+	<script>
+   /**
+    vue中的@click原理
+
+    1: 第一次执行渲染的时候，执行createELm函数父的vnode创建完子vnode（也就是vnode.children）后，如果发现vnode定义了data属性，就执行invokeCreateHooks函数
+    1-1：invokeCreateHooks的函数，操作attribute,class,style等属性的函数
+    1-2： 当发现data里面有on属性，表示是事件类型的指令，会执行\vue\src\platforms\web\runtime\modules\events.js里面的updateDOMListeners方法，
+    1-3: 然后执行upateListeners方法，参数是当前事件，旧vnode事件，新增事件函数，移除事件
+    函数，一次事件执行函数，当前vue实例
+    1-4： 用for循环添加事件，应为on对象里面可能又有change, click, mouseover,等等各种事件，都需要一一添加都dom那里
+    1-5： 最后会遍历就vnode的on对象，如果发现旧的vnode里面没有新vnode的on，
+    说明该事件只存在旧的vnode.el那里，新的vnode的on对象没有该事件，就执行
+    remove函数移除该事件
+
+    2-1: 当页面重新渲染的时候（有数据改变，渲染watch重新执行一次），执行
+    patchVnode方法，如果新的vnode里面有定义的data，就会执行attrbute, class, style等属性函数的update函数
+    2-2： 这时候又一次执行upadteListners方法，如果old已经定义好事件函数了 ，
+    说明旧vnode和新vnode的事件函数一致，就会走到cur !== old判断
+    那之前旧vnode定义好的事件函数直接复制给新的vnode.data.on[name]里面
+    不做事件的新增和事件的移除
+
+    3：第一次渲染和第二次更新，走的是不同的逻辑，但是最终都会执行updateDOMListeners方法
+
+    4： 回调函数之所以可以访问this，就是在处理函数的时候如果有多个参数
+    就用apply，如果没有参数就是call来改变this的执行，this指向是当前实例  
+    
+    */
+   
+   /**
+    它的render函数是：
+    ƒ anonymous() {
+		    with(this) {
+		        return _c('div', {
+		            attrs: {
+		                "id": "app"
+		            }
+		        }, [_c('button', {
+		            on: {
+		                "click": function ($event) {
+		                    return clickMe($event, msg)
+		                }
+		            }
+		        }, [_v("点击我")]), _v(" "), _c('h1', [_v(_s(msg))])])
+		    }
+		}
+})
+    */
+		var app = new Vue({
+			el: '#app',
+			data: {
+				msg: '000',
+				clickMeHan: 'clickMe',
+				test: true
+			},
+			
+			mounted() {		
+
+			},
+			methods: {
+				clickMe(event, params) {
+					// console.log(params)
+					this.msg = 'click'
+				},
+				checkMe2() {
+					console.log(this)
+				}
+			}
+		})
+	</script>
+</body>
+</html>

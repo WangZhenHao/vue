@@ -75,11 +75,11 @@ export default class Watcher {
     this.expression = process.env.NODE_ENV !== 'production'
       ? expOrFn.toString()
       : ''
-    
     // parse expression for getter
     if (typeof expOrFn === 'function') {
       this.getter = expOrFn
     } else {
+      
       this.getter = parsePath(expOrFn)
       if (!this.getter) {
         this.getter = noop
@@ -113,6 +113,7 @@ export default class Watcher {
         throw e
       }
     } finally {
+
       // "touch" every property so they are all tracked as
       // dependencies for deep watching
       if (this.deep) {

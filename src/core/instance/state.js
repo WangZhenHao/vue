@@ -172,6 +172,7 @@ export function getData (data: Function, vm: Component): any {
 const computedWatcherOptions = { lazy: true }
 
 function initComputed (vm: Component, computed: Object) {
+
   // $flow-disable-line
   const watchers = vm._computedWatchers = Object.create(null)
   // computed properties are just getters during SSR
@@ -217,6 +218,7 @@ export function defineComputed (
   key: string,
   userDef: Object | Function
 ) {
+
   const shouldCache = !isServerRendering()
   if (typeof userDef === 'function') {
     sharedPropertyDefinition.get = shouldCache
@@ -294,6 +296,7 @@ function initMethods (vm: Component, methods: Object) {
 }
 
 function initWatch (vm: Component, watch: Object) {
+
   for (const key in watch) {
     const handler = watch[key]
     if (Array.isArray(handler)) {
@@ -319,6 +322,7 @@ function createWatcher (
   if (typeof handler === 'string') {
     handler = vm[handler]
   }
+
   return vm.$watch(expOrFn, handler, options)
 }
 
@@ -353,6 +357,7 @@ export function stateMixin (Vue: Class<Component>) {
     cb: any,
     options?: Object
   ): Function {
+    
     const vm: Component = this
     if (isPlainObject(cb)) {
       return createWatcher(vm, expOrFn, cb, options)

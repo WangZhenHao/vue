@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+
+<body>
+	<div id="app">
+		<span> {{ msg }} </span>
+	</div>
+	<script>
+		var nodeOps = {
+			createElement: function createElement(tagName, vnode) {
+				const elm = document.createElement(tagName)
+				if (tagName !== 'select') {
+					return elm
+				}
+				// false or null will remove the attribute but undefined will not
+				if (vnode.data && vnode.data.attrs && vnode.data.attrs.multiple !== undefined) {
+					elm.setAttribute('multiple', 'multiple')
+				}
+				return elm
+			},
+			createElementNS: function createElementNS(namespace, tagName) {
+				return document.createElementNS(namespaceMap[namespace], tagName)
+			},
+			createTextNode: function createTextNode(text) {
+				return document.createTextNode(text)
+			},
+			removeChild: function removeChild(node, child) {
+				node.removeChild(child)
+			},
+			appendChild: function appendChild(node, child) {
+				node.appendChild(child)
+			},
+			parentNode: function parentNode(node) {
+				return node.parentNode
+			},
+			nextSibling: function nextSibling(node) {
+				return node.nextSibling
+			},
+			tagName: function tagName(node) {
+				return node.tagName
+			},
+			insertBefore: function insertBefore(parentNode, newNode, referenceNode) {
+				parentNode.insertBefore(newNode, referenceNode)
+			}
+		}
+
+
+	</script>
+	<script>
+		function insert(parent, elm, ref) {
+			if (parent) {
+				if (ref) {
+					if (nodeOps.parentNode(ref) === parent) {
+						nodeOps.insertBefore(parent, elm, ref)
+					}
+				} else {
+
+					nodeOps.appendChild(parent, elm)
+				}
+			}
+		}
+
+		function invokeCreateHooks(vnode) {
+			var el = vnode.elm;
+
+			var data = vnode.data.attrs;
+			for (let i in data) {
+				el.setAttribute(i, data[i]);
+			}
+
+		}
+
+		function createElm(
+			vnode,
+			insertedVnodeQueue,
+			parentElm,
+			refElm,
+			nested,
+			ownerArray,
+			index
+		) {
+			vnode.isRootInsert = !nested;
+
+			var data = vnode.data;
+			var children = vnode.children;
+			var tag = vnode.tag;
+			if (tag) {
+				vnode.elm = nodeOps.createElement(tag, vnode);
+
+				createChildren(vnode, children, insertedVnodeQueue)
+				if (data) {
+					invokeCreateHooks(vnode, insertedVnodeQueue)
+				}
+
+				insert(parentElm, vnode.elm, refElm)
+			} else {
+				vnode.elm = nodeOps.createTextNode(vnode.text)
+				insert(parentElm, vnode.elm, refElm)
+			}
+
+
+
+		}
+
+		function createChildren(vnode, children, insertedVnodeQueue) {
+			if (Array.isArray(children)) {
+				for (let i = 0; i < children.length; i++) {
+					createElm(children[i], insertedVnodeQueue, vnode.elm, null, true, children, i)
+				}
+			} else {
+				nodeOps.appendChild(vnode.elm, nodeOps.createTextNode(vnode.text))
+			}
+		}
+
+		function removeVnodes(vnodes, startIdx, endIdx) {
+			for (; startIdx <= endIdx; ++startIdx) {
+				const ch = vnodes[startIdx]
+				removeAndInvokeRemoveHook(ch)
+				// const ch = vnodes[startIdx]
+				// if (isDef(ch)) {
+				// 	if (isDef(ch.tag)) {
+				// 		removeAndInvokeRemoveHook(ch)
+				// 		invokeDestroyHook(ch)
+				// 	} else { // Text node
+				// 		removeNode(ch.elm)
+				// 	}
+				// }
+			}
+		}
+		function removeAndInvokeRemoveHook(vnodes, rm) {
+			const listeners = 1 + 1
+			elm = vnodes
+			rm = createRmCb(elm, listeners)
+
+			rm()
+		}
+		function createRmCb(childElm, listeners) {
+			function remove() {
+				// if (--remove.listeners === 0) {
+				removeNode(childElm)
+				// }
+			}
+			remove.listeners = listeners
+			return remove
+		}
+		function removeNode(el) {
+			const parent = nodeOps.parentNode(el)
+			// element may have already been removed due to v-html / v-text
+			if (parent) {
+				nodeOps.removeChild(parent, el)
+			}
+		}
+
+	</script>
+	<script>
+		var vnode = {
+			data: { attrs: { id: "app" } },
+			children: [
+				{
+					data: { attrs: { class: "text" } },
+					tag: 'span',
+					isRootInsert: true,
+					isComment: false,
+					children: [
+						{
+							tag: undefined,
+							text: '000',
+							isRootInsert: true,
+							isComment: false,
+						}
+					]
+				}
+			],
+			isRootInsert: true,
+			isComment: false,
+			tag: "div"
+		}
+
+		function Vue(options) {
+			this.$el = document.querySelector(options.el);
+			this._update(vnode)
+		}
+
+		Vue.prototype._update = function (vnode) {
+			const vm = this;
+			vm.$el = vm.__patch__(vm.$el, vnode)
+		}
+		Vue.prototype.__patch__ = function (oldVnode, vnode, hydrating, rmeoveOny) {
+
+			var oldElm = oldVnode;
+			var parentElm = nodeOps.parentNode(oldElm);
+
+			createElm(
+				vnode,
+				[],
+				parentElm,
+				nodeOps.nextSibling(oldElm)
+			)
+
+			if (parentElm) {
+				removeVnodes([oldVnode], 0, 0);
+			}
+		}
+	</script>
+	<script>
+		var app = new Vue({
+			el: '#app'
+		})
+
+		console.log(app)
+	</script>
+</body>
+
+</html>

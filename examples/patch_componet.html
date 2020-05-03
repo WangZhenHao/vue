@@ -10,7 +10,21 @@
 		<test :msg="msg"></test>
 	</div>
 	<script>
-    
+    /**
+     第一次渲染：
+     1：如果是第一次渲染的时候，会执行createElm方法，里面有一个方法createComponent
+     ，如果是一个组件，就会执行初始化组件并且返回true,
+     在初始化的过程中，执行组件自带的init方法，就是new vue一次
+     1-1：如果有props属性，先校验props是否合法，然后就定义响应式数据（get,set的函数）
+		
+		第二次渲染
+		2：如果组件更新了数据，就回去执行组件钩子prepatch方法，
+		里面有一个updateChildComponent方法，就是去更新子组件
+		说说prop的处理
+		2-1： 对vm._props进行赋值，在赋值的之前会对props进行校验
+		，如果触发了props了的set，然后会更新子组件的渲染watch 
+
+     */
 		/**
 		 * 先执行render函数，render函数中有一个_c的方法，就是创建元素节点，实质是调用
 		 * creteaElement函数

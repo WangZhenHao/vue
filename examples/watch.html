@@ -10,18 +10,70 @@
 		 <div>msg: {{ msg }}</div>
 	</div>
 	<script>
+   /**
+    * vue中的watch执行原理
+    1:在vue的初始化_init中会执行initState方法，执行initWatch
+    函数,遍历watch对象，分别执行createWatch
+
+    1-1:如果值是一个函数，执行$watch方法
+    执行new watch(),这是属于 用户watch,而不是
+		渲染watch, user为true，lazy为false, this.getter是一个vm[key]函数
+		目的就是为了触发该属性的get方法，
+		1-1-1： parsePath方法使用‘.’去切割字符串，意思就是
+		{'form.test.name': function() {}}是可以的，达到一种深度监听的功能
+
+    
+    1-2:生成this.getter函数之后，会执行this.get()
+    方法，也就是执行this.getter函数，这个函数会触发
+    对象中的get方法，也就完成了该属性对watch的收集
+    ，把这个用户watch添加到dep对象里面，最终这个键名
+    会有两个watch，一个是渲染watch，一个是用户watch
+    1-3：如果触发该键名的set方法，就会触发这两个watch的执行
+
+    2-1： 如果watch的键值是一个对象，就获取改对象中的handler属性作为函数传给$watch
+    2-2： new watch去完成用户watch的收集，然后如果有对象有immediate，就只执行handler函数
+    
+    2-2： 如果是一个深度对象，并且设置了deep为true, 就会执行
+    traverse方法，这个方法判断如果传入的值是对象或者是数组
+    就会循环递归调用_traverse，就可以触发该对象的get方法
+    搜集当前的用户watch实例
+    2-3： 如果传入的不是一个数组或者对象就会reture出去
+    2-4: 深度监听核心点是：递归的去触发该对象的get方法
+    让深度对象都收集当前的watch
+
+
+    */
+    var province = [];
 		var app = new Vue({
 			el: '#app',
 			data: {
-				msg: '000',
+				msg: '111'
+				// msg: {
+				// 	test: '000',
+				// 	name: {
+				// 		n: 'wzh'
+				// 	}
+				// },
 			},
 			watch: {
 				msg(newVal, oldVal) {
 					console.log(newVal, oldVal)
 				}
+				// msg: {
+				// 	handler(a, b) {
+				// 		console.log(a, b)
+				// 	},
+				// 	deep: true
+				// }
+				// 'msg.test': function(a, b) {
+				// 	console.log(a, b)
+				// }
 			},
 			mounted() {
-				
+				setTimeout(() => {
+					// this.msg.name.n = '小米'
+					this.msg = '11'
+				}, 1000)
 			},
 		})
 	</script>

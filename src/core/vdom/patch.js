@@ -83,7 +83,7 @@ export function createPatchFunction (backend) {
       }
     }
   }
-
+  
   function emptyNodeAt (elm) {
     return new VNode(nodeOps.tagName(elm).toLowerCase(), {}, [], undefined, elm)
   }
@@ -133,6 +133,7 @@ export function createPatchFunction (backend) {
     ownerArray,
     index
   ) {
+
     if (isDef(vnode.elm) && isDef(ownerArray)) {
       // This vnode was used in a previous render!
       // now it's used as a new node, overwriting its elm would cause
@@ -217,6 +218,7 @@ export function createPatchFunction (backend) {
     let i = vnode.data
     if (isDef(i)) {
       const isReactivated = isDef(vnode.componentInstance) && i.keepAlive
+      
       if (isDef(i = i.hook) && isDef(i = i.init)) {
         i(vnode, false /* hydrating */)
       }
@@ -516,7 +518,6 @@ export function createPatchFunction (backend) {
     index,
     removeOnly
   ) {
-    
     if (oldVnode === vnode) {
       return
     }

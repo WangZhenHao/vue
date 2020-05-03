@@ -3,25 +3,177 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
-	<script src="../dist/vue.js"></script>
+	<!-- <script src="../dist/vue.js"></script> -->
 </head>
 <body>
 	
-	<script>
-		function test() {
-			this.a = 1;
-			this.b = 2;
-			this.c = 3;
-			this.d = 4;
+	<style>
+  :root {
+  --gradient: linear-gradient(90deg, #ddd 0px, #e8e8e8 40px, #ddd 80px);
+  --grey: #eee;
+  --text: #ccc;
+  --animation: shine 1.6s infinite linear;
+  --animation-header: shine-header 1.6s infinite linear;
+}
 
-			if(!(this instanceof test)) {
-				return new test();
-			}
-		}
-		// var test = {name: 1, age: 12, address: '说法萨芬士大夫手动阀手动阀', value: 2, tes: 32, a: 23, b: 32, c: 23}
+.skeleton {
+  z-index: 100;
+  position: fixed;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 100%;
+  height: 100%;
+  background-color: white;
+}
 
-    var arr = [test(), test(), test()]
-		debugger
-	</script>
+/*@media (min-width: 1200px) {
+  .skeleton {
+    max-width: 1200px;
+  }
+}*/
+
+.skeleton__navbar {
+  width: 100%;
+  height: 100px;
+  background: white;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.skeleton__nav-item {
+  width: 100px;
+  height: 50px;
+  background-image: var(--gradient);
+  animation: var(--animation);
+  background-size: 275px;
+}
+
+.skeleton__nav-box {
+  height: 50px;
+  display: flex;
+  flex-grow: 1;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.skeleton__nav-text {
+  color: var(--text);
+}
+
+.skeleton__header {
+  margin-top: 2rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2rem;
+}
+
+.skeleton__circle {
+  width: 275px;
+  height: 275px;
+  background-image: var(--gradient);
+  animation: var(--animation-header);
+  background-size: 300px;
+  border-radius: 50%;
+}
+
+.skeleton__img {
+  width: 325px;
+  height: 250px;
+  background-image: var(--gradient);
+  animation: var(--animation-header);
+  background-size: 300px;
+}
+
+.skeleton__info {
+  width: 200px;
+  height: 250px;
+  background-image: var(--gradient);
+  animation: var(--animation-header);
+  background-size: 300px;
+}
+
+.skeleton__products {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.skeleton__product {
+  width: 200px;
+  height: 200px;
+  background-image: var(--gradient);
+  animation: var(--animation);
+  background-size: 300px;
+}
+
+/*@media (max-width: 1200px) {*/
+  .skeleton__navbar,
+  .skeleton__header,
+  .skeleton__products {
+    flex-direction: column;
+  }
+
+  .skeleton__navbar {
+    align-items: flex-start;
+  }
+
+  .skeleton__nav-box,
+  .skeleton__nav-text,
+  .skeleton__img,
+  .skeleton__info,
+  .skeleton__products {
+    display: none;
+  }
+
+  .skeleton__nav-item {
+    width: 100%;
+  }
+
+@keyframes shine {
+  0% {
+    background-position: -100px;
+  }
+  40%,
+  100% {
+    background-position: 200px;
+  }
+}
+
+@keyframes shine-header {
+  0% {
+    background-position: -100px;
+  }
+  40%,
+  100% {
+    background-position: 270px;
+  }
+/*}*/
+</style>
+<div>
+  <section class="skeleton">
+      <div class="skeleton__navbar">
+        <div class="skeleton__nav-item"></div>
+        <div class="skeleton__nav-box">
+          <div class="skeleton__nav-text">Item 1</div>
+          <div class="skeleton__nav-text">Item 2</div>
+          <div class="skeleton__nav-text">Item 3</div>
+        </div>
+        <div class="skeleton__nav-item"></div>
+      </div>
+      <div class="skeleton__header">
+        <div class="skeleton__circle"></div>
+        <div class="skeleton__img"></div>
+        <div class="skeleton__info"></div>
+      </div>
+      <div class="skeleton__products">
+        <div class="skeleton__product"></div>
+        <div class="skeleton__product"></div>
+        <div class="skeleton__product"></div>
+      </div>
+    </section>
+</div>
 </body>
 </html>

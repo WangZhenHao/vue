@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="../dist/vue.js"></script>
+</head>
+<body>
+	<div id="app">
+		 <input type="text" v-model="msg" @input="handler">{{ msg }}
+	</div>
+	<script>
+   /**
+    vue中的v-model源码
+    
+    1： 在编译成一个input函数保存在虚拟dom上，是属于on事件
+    1-2： 所以说，v-model就是input事件的语法糖，它注册的事件
+    流程和其他事件保持一致，
+
+    (function anonymous() {
+        with(this) {
+            return _c('div', {
+                attrs: {
+                    "id": "app"
+                }
+            }, [_c('input', {
+                directives: [{
+                    name: "model",
+                    rawName: "v-model",
+                    value: (msg),
+                    expression: "msg"
+                }],
+                attrs: {
+                    "type": "text"
+                },
+                domProps: {
+                    "value": (msg)
+                },
+                on: {
+                    "input": [
+                        function ($event) {
+                            if ($event.target.composing) return;
+                            msg = $event.target.value
+                        },
+                        handler
+                    ]
+                }
+            }), _v(_s(msg) + "\n\t")])
+        }
+    })
+})
+*/
+		var app = new Vue({
+			el: '#app',
+			data: {
+				msg: 'test'
+			},
+			
+			mounted() {		
+
+			},
+			methods: {
+		      handler() {
+                console.log(this.msg)
+              },
+              handler1() {
+                alert(1)
+              },
+              handler2() {
+                alert(2)
+              }
+			}
+		})
+	</script>
+</body>
+</html>

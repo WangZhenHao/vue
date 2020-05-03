@@ -1030,7 +1030,7 @@
     if ((!getter || setter) && arguments.length === 2) {
       val = obj[key];
     }
-
+    
     var childOb = !shallow && observe(val);
     Object.defineProperty(obj, key, {
       enumerable: true,
@@ -3355,7 +3355,6 @@
     normalizationType,
     alwaysNormalize
   ) {
-
     if (Array.isArray(data) || isPrimitive(data)) {
       normalizationType = children;
       children = data;
@@ -3886,6 +3885,7 @@
     };
 
     Vue.prototype.$emit = function (event) {
+      debugger
       var vm = this;
       {
         var lowerCaseEvent = event.toLowerCase();
@@ -4099,7 +4099,6 @@
       }
     }, true /* isRenderWatcher */);
     hydrating = false;
-    console.log(a);
     // manually mounted instance, call mounted on self
     // mounted is called for render-created child components in its inserted hook
     if (vm.$vnode == null) {
@@ -4322,8 +4321,8 @@
     //    user watchers are created before the render watcher)
     // 3. If a component is destroyed during a parent component's watcher run,
     //    its watchers can be skipped.
+    
     queue.sort(function (a, b) { return a.id - b.id; });
-
     // do not cache length because more watchers might be pushed
     // as we run existing watchers
     for (index = 0; index < queue.length; index++) {
@@ -4473,11 +4472,11 @@
     this.newDepIds = new _Set();
     this.expression =  expOrFn.toString()
       ;
-      
     // parse expression for getter
     if (typeof expOrFn === 'function') {
       this.getter = expOrFn;
     } else {
+        
       this.getter = parsePath(expOrFn);
       if (!this.getter) {
         this.getter = noop;
@@ -4511,6 +4510,7 @@
         throw e
       }
     } finally {
+
       // "touch" every property so they are all tracked as
       // dependencies for deep watching
       if (this.deep) {
@@ -4786,6 +4786,7 @@
   var computedWatcherOptions = { lazy: true };
 
   function initComputed (vm, computed) {
+
     // $flow-disable-line
     var watchers = vm._computedWatchers = Object.create(null);
     // computed properties are just getters during SSR
@@ -4831,6 +4832,7 @@
     key,
     userDef
   ) {
+
     var shouldCache = !isServerRendering();
     if (typeof userDef === 'function') {
       sharedPropertyDefinition.get = shouldCache
@@ -4908,6 +4910,7 @@
   }
 
   function initWatch (vm, watch) {
+
     for (var key in watch) {
       var handler = watch[key];
       if (Array.isArray(handler)) {
@@ -4933,6 +4936,7 @@
     if (typeof handler === 'string') {
       handler = vm[handler];
     }
+
     return vm.$watch(expOrFn, handler, options)
   }
 
@@ -4967,6 +4971,7 @@
       cb,
       options
     ) {
+      
       var vm = this;
       if (isPlainObject(cb)) {
         return createWatcher(vm, expOrFn, cb, options)
@@ -5193,7 +5198,6 @@
         Super.options,
         extendOptions
       );
-      console.log(Super.options, extendOptions);
       Sub['super'] = Super;
 
       // For props and computed properties, we define the proxy getters on
@@ -5888,7 +5892,7 @@
         }
       }
     }
-
+    
     function emptyNodeAt (elm) {
       return new VNode(nodeOps.tagName(elm).toLowerCase(), {}, [], undefined, elm)
     }
@@ -5938,6 +5942,7 @@
       ownerArray,
       index
     ) {
+
       if (isDef(vnode.elm) && isDef(ownerArray)) {
         // This vnode was used in a previous render!
         // now it's used as a new node, overwriting its elm would cause
@@ -6004,6 +6009,7 @@
       var i = vnode.data;
       if (isDef(i)) {
         var isReactivated = isDef(vnode.componentInstance) && i.keepAlive;
+        
         if (isDef(i = i.hook) && isDef(i = i.init)) {
           i(vnode, false /* hydrating */);
         }
@@ -6303,7 +6309,6 @@
       index,
       removeOnly
     ) {
-      
       if (oldVnode === vnode) {
         return
       }
@@ -12043,6 +12048,7 @@
         }, this);
         var render = ref.render;
         var staticRenderFns = ref.staticRenderFns;
+        console.log(render);
         options.render = render;
         options.staticRenderFns = staticRenderFns;
         /* istanbul ignore if */

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+		function def(obj, key, val, enumerable) {
+			Object.defineProperty(obj, key, {
+				value: val,
+				enumerable: !!enumerable,
+				writable: true,
+				configurable: true
+			})
+		}
+	</script>
+	<script>
+		var methodsToPatch = [
+			'push',
+			'pop',
+			'shift',
+			'unshift',
+			'splice',
+			'sort',
+			'reserse'
+		]
+		var arrayProto = Array.prototype;
+		var arrayMethods = Object.create(arrayProto);
+
+		methodsToPatch.forEach(function(method) {
+			var original = arrayProto[method];
+      def(arrayMethods, method, function mutator(...args) {
+				const result = original.apply(this, args)
+				const ob = this.__ob__;
+				let inserted;
+				switch(method) {
+					case 'push':
+					case 'unshift':
+					  inserted = args
+					  break;
+					case 'splice':
+					  inserted = args.slice(2)
+					  break;
+				}
+				if(inserted) ob.observeArray(inserted)
+        ob.dep.notify();
+				return result;
+			})
+
+			// arrayMethods[method] = function mutator(...args) {
+			// 	const result = original.apply(this, args)
+			// 	const ob = this.__ob__;
+			// 	let inserted;
+			// 	switch(method) {
+			// 		case 'push':
+			// 		case 'unshift':
+			// 		  inserted = args
+			// 		  break;
+			// 		case 'splice':
+			// 		  inserted = args.slice(2)
+			// 		  break;
+			// 	}
+
+			// 	return result;
+			// }
+		})
+		// console.log(arrayMethods)
+	</script>
+	<script>
+		function Dep() {
+
+		}
+		Dep.prototype = {
+			notify() {
+				console.log('触发了数组的更新')
+			},
+			depend() {
+
+			}
+
+		}
+	</script>
+	<script>
+		var obj = {
+			    msg: '1',
+					list: [
+					  { name: '1' },
+					  { name: '2' }
+					]
+		}
+    function Observe(value) {
+    	this.value = value;
+    	this.vmCount = 0;
+    	this.dep = new Dep();
+    	// value.__ob__ = this;
+    	def(value, '__ob__', this)
+    	if(Array.isArray(value)) {
+    		value.__proto__ = arrayMethods
+    		this.observeArray(value)
+    	} else {
+    		this.walk(value)
+    	}
+    }
+    Observe.prototype = {
+    	walk: function(val) {
+	    	const keys = Object.keys(val)
+		    for (let i = 0; i < keys.length; i++) {
+		      defineReactive(val, keys[i])
+	      }
+	    },
+	    observeArray: function(items) {
+	    	for(var i = 0, len = items.length; i < len; i++) {
+	    		observe(items[i])
+	    	}
+	    }
+    }
+
+    function observe(value) {
+    	var ob
+      if(Array.isArray(value) || (typeof value == 'object')) {
+      	ob = new Observe(value)
+      }
+
+      return ob
+    }
+		function defineReactive(obj, key, val) {
+			
+			if(arguments.length === 2) {
+				val = obj[key]
+			}
+      
+      var child = observe(val);
+			Object.defineProperty(obj, key, {
+				enumerable: true,
+				configurable: true,
+				get: function () {
+					console.log('触发get', key)
+					let value = val;
+
+					return value;
+				},
+				set: function(newValue) {
+				  console.log('触发了set')
+				  val = newValue
+				}
+			})
+		}
+
+   // obj.list.push({name: '3'})
+  
+   // console.log(obj)
+   var b = new Observe(obj)
+
+    // obj.list[0].name = 'test'
+   obj.list.push({name: '3'})
+   // obj.list[2].name = 'tset'
+   console.log(obj)
+	</script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="../dist/vue.js"></script>
+</head>
+<body>
+	<div id="app">
+		 <!-- <div>msg: {{ msg }}</div>
+		 <div>{{ msg1 }}</div>
+		 <div>{{ msg2 }}</div> -->
+
+		 <ul>
+		 	<li v-for="item in list">{{ item.name }}</li>
+		 </ul>
+	</div>
+	<script>
+		/**
+     vue的响应式原理
+
+     1: 对data，computed对象进行响应式处理，也就是设置get和set修饰符
+     1-1：执行$mouted方法，即执行里面mountComponent函数，
+     该函数会new watch，这是一个渲染watch
+    
+    2: 执行完渲染watch之后，也就是所有属性搜集完了渲染watch
+    就会执行cleanupDeps，
+    2-1： 清除cleanupDeps的目的是执行v-if的时候，最新收集到watch的newDeps,和之前收集到watch的newDeps对比，就会把最新的newDeps赋值到deps和depsId里面，移除响应式属性没有用到的渲染watch（该响应式属性不显示视图了，不需要执行渲染watch，dep里面的渲染watch就需要移除掉）
+
+    3-1： 如果改变data属性里面的值，就会重新触发渲染watch的执行
+    ，重新触发所有属性的get方法，这时候依旧会执行addDep方法尝试着
+    去收集渲染watch，执行addDep(), 判断newDepIds里面是否有当前的
+    dep，如果没有就会插入到newDepIds（一般都会执行，因为每次收集完毕之后，newDepIds和newDep都会被清空）
+    3-2: 然后继续判断dep有没有包含在渲染watch的depIds(上次搜集的所有dep)，
+    如果depIds里面有dep，意思就是该属性已经搜集过了，
+    不需要重新收集一次，如果没有包含，该dep就会收集watch
+    3-3： 出现第二次dep收集渲染watch的情况主要是用了v-if
+    3-4： 重新触发v-if的时候，还需要把之前收集过的渲染watch，
+    清除掉，避免没有绑定视图的响应式属性的执行dep.notify()，优化性能
+    
+    
+    数组是怎么做响应式处理的？
+    4：在执行new Observer里面初始化的时候，判断该对象是不是一个数组
+    如果是数组会走另一个逻辑
+    4-1： 修改数组的原型链，重写数组的push,shift,sort,unshift,splice方法(这些方法会改变数组),
+    4-2： 这些改变数组的方法会执行dep.notify()也就是执行watch,触发视图的更新
+    4-3: 如果是新增了数组，也会重新收集一次新增数组的dep依赖
+    4-4： 数组的响应式依赖收集稍微麻烦一点，执行this.observeArray,
+    递归去执行，最终执行defineReactive添加get,set修饰符
+    
+
+    *：__obj__是在new Obsever()添加的，目的就是
+    给深层的对象去搜集同一个watch
+    *：收集依赖是判断childOb对象是否为真，如果为真，说明有深层次的嵌套
+    他们应该收集同一个渲染watch
+		 */
+		var app = new Vue({
+			el: '#app',
+			data: {
+				// msg: '000',
+				// msg1: '111',
+				msg2: '222',
+				list: [
+					{ name: '1' },
+					{ name: '2' }
+				]
+			},
+			
+			mounted() {
+				// console.log(this._data)
+				// this.list[0].name = 'test'
+				this.list.push({name: '5'})
+				this.list[2].name = 'tset'
+				console.log(this.list)
+				// setTimeout(() => {
+				// 	this.msg = '333'
+				// }, 1000)
+			},   
+		})
+	</script>
+</body>
+</html>

@@ -7,22 +7,56 @@
 </head>
 <body>
 	<div id="app">
-		 <div>msg: {{ msg1 }}</div>
+     <div>{{ msg }}</div>
+		 <div>msg: {{ msg1  }}</div>
+		 <div>{{ testComputed1 }}</div>
 	</div>
 	<script>
+		/**
+			vue的computedd执行原理
+      1: 比initWatch先执行初始化
+      1-1： 新建一个watch对象，用来保存下面每一个键名缓存一个new watch
+      1-2: 对computed进行遍历，拿到key的值复制为getter，如果该getter不是函数，或者为空就会报错
+      1-3：watch[key] = new Watch({...})的方法创建一个watch，该watch的this.lazy是true, this.dirty为true，就会导致初始化的时候不执行getter方法
+      1-4： 判断key是否属于this的一个属性，data和props不可以使用一个的键名，如果是就会错误，否则就会执行defineComputed
+      1-5: 如果userDef（就是key的值）是一个函数，就会为当前实例创建一个响应式对象，get是一个函数，会触发watch的执行，set是一个空函数，如果出发set会报警告
+      1-5-1： get函数的返回值是watch.value
+
+      2-1: 当页面渲染的时候，触发该computed的键名的get函数
+      ，就会执行watch里面的evaluate()方法，也就是执行了watch里面的this.getter函数，而这个函数是之前定义好的computed对于key的函数，
+      2-2： 执行this.getter函数，就会出发 里面的vm属性去收集computed产生的watch，computed就完成了被其他属性收集watch
+      2-3: 执行完this.getter后，就会把返回的值赋值给this.value,
+      并且this.dirty为false
+      2-4: vnode就显示了compouted属性返回的值，显示到页面
+
+      3-1: 如果没有触发computed属性的函数里面的值改变，而是改变了其他页面的值，导致了页面渲染,应该this.dirty为false,
+      所有该computed属性的函数不会执行
+
+      4-1：如果改变了computed属性里面的值，该vm属性至少会执行两个watch，一个数渲染watch，一个是computed的watch
+			4-2：其中computed的watch会执行update()方法，把this.dirty设置为true,
+			4-3： 这时候去执行渲染watch的函数的时候，触发到computed属性的get, 就会更新改属性的值即watch.value
+
+			5: 如果该computed属性定义了set和get函数对象，而不是一个函数，就会执行里面get,set函数
+
+			注意一点的就是，执行update的时候，该watch不会添加到nextTick执行
+		*/
+		
 		var app = new Vue({
 			el: '#app',
 			data: {
 				msg: '000',
+				testComputed1: '111',
+				testComputed2: '222'
 			},
 			computed: {
 				msg1() {
-					console.log(newVal, oldVal)
-					return this.msg
+					return this.testComputed1 + '-' + this.testComputed2
 				}
 			},
 			mounted() {
-				
+				setTimeout(() => {
+					this.testComputed1 = 'aaa'
+				}, 2000)
 			},
 		})
 	</script>

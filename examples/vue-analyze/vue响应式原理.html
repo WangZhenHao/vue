@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>vue响应式原理</title>
+</head>
+
+<body>
+	<div id="app"></div>
+	<script>
+		let uid = 0;
+		var arr = [];
+		function Dep() {
+			this.id = ++uid;
+			this.subs = [];
+		}
+
+		function pushTarget(target) {
+			Dep.target = target;
+		}
+
+		function popTarget() {
+			Dep.target = null;
+		}
+
+		Dep.target = null;
+
+		Dep.prototype = {
+			addSub: function (Watcher) {
+				this.subs.push(Watcher);
+			},
+			removeSub: function (Watcher) {
+
+			},
+			depend: function () {
+				if (Dep.target) {
+					Dep.target.addDep(this);
+				}
+			},
+			notify: function () {
+				let subs = this.subs.slice();
+				for (let i = 0, len = subs.length; i < len; i++) {
+					subs[i].update();
+				}
+			}
+		}
+	</script>
+	<script>
+
+		function Watcher(vm, expOrFn, cb) {
+			this.vm = vm;
+			this.deps = [];
+			this.newDeps = [];
+			this.depIds = new Set();
+			this.newDepIds = new Set();
+
+			this.getter = expOrFn;
+
+			this.get();
+		}
+
+		Watcher.prototype = {
+			get: function () {
+				pushTarget(this)
+				// 开始订阅watch
+				this.getter.call(this.vm, this.vm);
+				popTarget();
+				this.cleanupDeps();
+			},
+			addDep: function (dep) {
+				const id = dep.id;
+
+				if (!this.newDepIds.has(id)) {
+					this.newDepIds.add(id);
+					this.newDeps.push(dep);
+					if (!this.depIds.has(id)) {
+						dep.addSub(this);
+					}
+				}
+			},
+			cleanupDeps: function () {
+				this.depIds = this.newDepIds;
+				this.newDepIds.clear();
+
+				this.deps = this.newDeps;
+				this.newDeps = [];
+			},
+			update() {
+				this.run();
+			},
+			run() {
+				this.get();
+			}
+		}
+
+	</script>
+	<script>
+
+		function Observe(data) {
+			this.walk(data);
+		}
+
+		Observe.prototype.walk = function (obj) {
+			const keys = Object.keys(obj);
+
+			for (let i = 0; i < keys.length; i++) {
+				defineReactive(obj, keys[i])
+			}
+		}
+
+		function observe(data) {
+			var ob = new Observe(data)
+		}
+
+		function defineReactive(obj, key, val) {
+
+			const dep = new Dep();
+
+			if (arguments.length === 2) {
+				val = obj[key];
+			}
+
+			Object.defineProperty(obj, key, {
+				enumerable: true,
+				configurable: true,
+				get: function reactiveGetter() {
+					var value = val;
+					if (Dep.target) {
+						// 订阅同一个watch
+						dep.depend();
+					}
+
+					return value;
+				},
+				set: function reactiveSetter(newValue) {
+					var value = val;
+					if (value === newValue) {
+						return;
+					}
+
+					val = newValue;
+
+					dep.notify();
+				}
+			})
+		}
+	</script>
+	<script>
+		function initState(vm) {
+			function proxy(target, sourceKey, key) {
+				Object.defineProperty(target, key, {
+					get: function proxyGet() {
+						return target[sourceKey][key];
+					},
+					set: function proxySet(val) {
+						target[sourceKey][key] = val;
+					}
+				})
+			}
+
+			var data = vm._data;
+			var keys = Object.keys(data);
+			let i = keys.length;
+
+			while (i--) {
+				var key = keys[i];
+				proxy(vm, '_data', key);
+			}
+
+			observe(data);
+		}
+
+		function lifecycleMixin(Vue) {
+			//更新dom
+			Vue.prototype._update = function (VNode) {
+				var vm = this;
+				vm.__patch__(vm.$el, VNode);
+			}
+		}
+
+		function renderMixin(Vue) {
+			//生成虚拟dom
+			Vue.prototype._render = function () {
+				var vm = this;
+				var html = `
+				  <h1>${vm.msg1}</h1><h2>${vm.msg2}</h2><h3>${vm.msg3}</h3>
+				  ${vm.showDiv ? '<div>显示</div>' : ''}
+				`;
+
+				return html;
+			}
+		}
+
+
+		function initMixin(Vue) {
+			Vue.prototype._init = function (options) {
+				let vm = this;
+				vm._data = options.data;
+
+				initState(vm);
+
+				vm.$mount(options.el)
+			}
+
+		}
+
+
+
+	</script>
+	<script>
+
+		function Vue(options) {
+			this._init(options);
+		}
+
+		Vue.prototype.__patch__ = function (element, VNode) {
+			element.innerHTML = VNode
+		}
+
+		Vue.prototype.$mount = function (el) {
+			var vm = this;
+			vm.$el = document.querySelector(el);
+
+			var updateCompoent = () => {
+				vm._update(vm._render())
+			}
+			// updateCompoent();
+			var a = new Watcher(vm, updateCompoent);
+			console.log(a)
+		}
+
+		initMixin(Vue);
+		renderMixin(Vue);
+		lifecycleMixin(Vue);
+
+	</script>
+	<script>
+		var app = new Vue({
+			el: '#app',
+			data: {
+				msg1: '我是h1',
+				msg2: '我是h2',
+				msg3: '我是h3',
+				showDiv: false
+			}
+		})
+
+		setTimeout(() => {
+			app.msg1 = 'change h1';
+		}, 3000)
+		console.log(app)
+	</script>
+</body>
+
+</html>

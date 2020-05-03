@@ -6,16 +6,40 @@
 </head>
 <body>
 	<script>
-		function test(a) {
-			a++
-			console.log(a)
-			return a;
+		/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+var twoSum = function(nums, target) {
+    var len = nums.length;
+    var i = 0;
+    while(i < len) {
+        var start = nums[i]
+        var endTarget = target - start
+        
+        // var arr = nums.slice(0, len + 1)
+        var endIndex = nums.indexOf(endTarget, i)
+        if( endIndex > -1) {
+           return [i, endIndex]
+        }
 
-		}
-
-		test(test(1))
-		var a = [test(1), test(2)]
-		console.log(a)
+        i++
+    }
+};
+var a = twoSum([2,11,15,7], 9)
+console.log(a)
+	</script>
+	<script>
+		var count = 0;
+	  var obj = {
+	  	say() {
+	  		count++
+	  		var count = count + ':';
+	  		console.log(count)
+	  		// return count
+	  	}
+	  }
 	</script>
 </body>
 </html>
