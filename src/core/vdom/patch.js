@@ -196,6 +196,7 @@ export function createPatchFunction (backend) {
       } else {
 
         createChildren(vnode, children, insertedVnodeQueue)
+
         if (isDef(data)) {
           invokeCreateHooks(vnode, insertedVnodeQueue)
         }

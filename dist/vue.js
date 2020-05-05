@@ -3784,6 +3784,7 @@
     // init parent attached events
     var listeners = vm.$options._parentListeners;
     if (listeners) {
+
       updateComponentListeners(vm, listeners);
     }
   }
@@ -3885,7 +3886,6 @@
     };
 
     Vue.prototype.$emit = function (event) {
-      debugger
       var vm = this;
       {
         var lowerCaseEvent = event.toLowerCase();
@@ -5987,6 +5987,7 @@
         {
 
           createChildren(vnode, children, insertedVnodeQueue);
+
           if (isDef(data)) {
             invokeCreateHooks(vnode, insertedVnodeQueue);
           }

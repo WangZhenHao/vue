@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="../dist/vue.js"></script>
+</head>
+<body>
+	<div id="app">
+		 <h1>异步组件</h1>
+		 <async-example></async-example>
+	</div>
+	<script>
+		/**
+		 vue异步组件原理
+  
+		 
+		 */
+		 Vue.component('async-example', function (resolve, reject) {
+		  setTimeout(function () {
+		    // 向 `resolve` 回调传递组件定义
+		    resolve({
+		      template: '<div>I am async!</div>'
+		    })
+		  }, 12000)
+		})
+
+		var app = new Vue({
+			el: '#app'
+		})
+	</script>
+</body>
+</html>
