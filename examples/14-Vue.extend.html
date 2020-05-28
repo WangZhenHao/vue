@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="../dist/vue.js"></script>
+</head>
+<body>
+	<div id="app">
+		   
+	</div>
+	<script>
+	  /**
+	   * vue中的Vue.extends方法
+	   
+		
+
+	   */
+    
+    var test = Vue.extend({
+    	template: '<h1>vue中的extend--{{name}}</h1>'
+    })
+    var el_test = new test({
+    	data() {
+    		return {
+    			name: 'wzh'
+    		}
+    	}
+    })
+    var instance = el_test.$mount()
+    console.log(instance)
+    
+		var app = new Vue({
+			el: '#app',
+			mounted() {
+				document.body.appendChild(instance.$el)
+			},
+			methods: {
+
+			}
+		})
+	</script>
+</body>
+</html>

@@ -8,7 +8,7 @@
 <body>
 	<div id="app">
 		 <h1>异步组件</h1>
-		 <async-example></async-example>
+		 <async-example></async-example>  
 	</div>
 	<script>
 		/**
@@ -16,13 +16,20 @@
   
 		 
 		 */
+		
+		/**
+		(function anonymous(
+		) {
+		with(this){return _c('div',{attrs:{"id":"app"}},[_c('h1',[_v("异步组件")]),_v(" "),_c('async-example')],1)}
+		})
+		 */
 		 Vue.component('async-example', function (resolve, reject) {
 		  setTimeout(function () {
 		    // 向 `resolve` 回调传递组件定义
 		    resolve({
 		      template: '<div>I am async!</div>'
 		    })
-		  }, 12000)
+		  }, 1200)
 		})
 
 		var app = new Vue({

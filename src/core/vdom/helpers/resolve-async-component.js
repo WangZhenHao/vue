@@ -22,6 +22,7 @@ function ensureCtor (comp: any, base) {
   ) {
     comp = comp.default
   }
+  debugger
   return isObject(comp)
     ? base.extend(comp)
     : comp
@@ -63,6 +64,7 @@ export function resolveAsyncComponent (
   }
 
   if (owner && !isDef(factory.owners)) {
+    debugger
     const owners = factory.owners = [owner]
     let sync = true
     let timerLoading = null

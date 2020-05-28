@@ -3182,6 +3182,7 @@
     children,
     tag
   ) {
+    
     if (isUndef(Ctor)) {
       return
     }
@@ -3616,6 +3617,7 @@
     ) {
       comp = comp.default;
     }
+    debugger
     return isObject(comp)
       ? base.extend(comp)
       : comp
@@ -3657,6 +3659,7 @@
     }
 
     if (owner && !isDef(factory.owners)) {
+      debugger
       var owners = factory.owners = [owner];
       var sync = true;
       var timerLoading = null;
