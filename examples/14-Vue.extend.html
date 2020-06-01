@@ -13,28 +13,34 @@
 	  /**
 	   * vue中的Vue.extends方法
 	   
-	   1: Vue.extends方法是继承Vue的所有方法，返回拥有Vue所有属性和方法的一个函数，命名为Sub
+	   1: Vue.extends方法是继承Vue的所有方法，返回拥有Vue所有属性和方法的一个函数，命名为VueComponent
 	   1-1： 如果传入一个对象参数，
 	   2： 如果使用new去执行的话，就会去实例化这个构造函数，执行_init方法，会对options做一次合并
-	   2-1：合并的对象有Vue.extends({})里面的参数, 实例化Sub传入的options参数, 
+	   2-1：合并的对象有Vue.extends({})里面的参数, 实例化VueComponent传入的options参数, 
 	   3： 合并完参数之后，就会执行一系列的初始化工作：如生命周期，watch，computed等
 	   不会执行$mount方法，应为该方法需要有元素节点才会执行
 	   3-1： $mount方法就是把虚拟dom变成真实dom的过程，执行render,或patch的过程
 
-       4: new Sub({})实例化这个组件了，返回该组件实例
+       4: new VueComponent({})实例化这个组件了，返回该组件实例
 
 	   */
     
     var test = Vue.extend({
-    	template: '<h1>vue中的extend--{{name}}</h1>'
+    	template: '<h1>vue中的extend--{{ name }}--{{ msg }}</h1>',
+    	data() {
+    		return {
+    			msg: 'my msg'
+    		}
+    	},
     })
     var el_test = new test({
     	data() {
     		return {
     			name: 'wzh'
     		}
-    	}
+    	},
     })
+    
     var instance = el_test.$mount()
     console.log(instance)
     

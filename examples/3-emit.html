@@ -25,7 +25,7 @@
       1-3: updateListeners函数就是通过for循环来遍历，来标准化一个事件函数，并且添加
       一个函数，其中的add是一个高阶函数，也会对比旧节点，判断是否需要移除一个事件函数
       1-2-1： $on方法是把改事件添加到this._events对象下面
-      1-4： Vue.prototype.$emti是用来触发事件，他就是执行vm._events对应的事件
+      1-4： Vue.prototype.$emit是用来触发事件，他就是执行vm._events对应的事件
       1-5： 把每一个事件用invokeWithErrorHandling函数触发，接受的参数是
       handler: 事件函数, context： vue实例, args： 参数, vm, info,
 

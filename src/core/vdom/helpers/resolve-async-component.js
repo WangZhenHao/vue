@@ -22,7 +22,6 @@ function ensureCtor (comp: any, base) {
   ) {
     comp = comp.default
   }
-  debugger
   return isObject(comp)
     ? base.extend(comp)
     : comp
@@ -91,6 +90,7 @@ export function resolveAsyncComponent (
     }
 
     const resolve = once((res: Object | Class<Component>) => {
+      debugger
       // cache resolved
       factory.resolved = ensureCtor(res, baseCtor)
       // invoke callbacks only if this is not a synchronous resolve

@@ -3182,7 +3182,6 @@
     children,
     tag
   ) {
-    
     if (isUndef(Ctor)) {
       return
     }
@@ -3617,7 +3616,6 @@
     ) {
       comp = comp.default;
     }
-    debugger
     return isObject(comp)
       ? base.extend(comp)
       : comp
@@ -3686,6 +3684,7 @@
       };
 
       var resolve = once(function (res) {
+        debugger
         // cache resolved
         factory.resolved = ensureCtor(res, baseCtor);
         // invoke callbacks only if this is not a synchronous resolve
@@ -5177,7 +5176,6 @@
      * Class inheritance
      */
     Vue.extend = function (extendOptions) {
-      debugger
       extendOptions = extendOptions || {};
       var Super = this;
       var SuperId = Super.cid;
