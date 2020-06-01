@@ -5177,6 +5177,7 @@
      * Class inheritance
      */
     Vue.extend = function (extendOptions) {
+      debugger
       extendOptions = extendOptions || {};
       var Super = this;
       var SuperId = Super.cid;
