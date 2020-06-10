@@ -23,8 +23,16 @@
 
 		1-4: 由于Ctor变成了undefined, 直接执行了createAsyncPlaceholder函数，该函数是用于返回一个空的vnode
 
+    2: 当asyncFn执行里面的resolve的时候，就会执行Vue.extends(),返回一个VueCompoent函数给
+    factory.resolved;
+    2-1: 然后执行一个forceRender函数，便利owners数组，执行数据里面的$forceUpdate()方法, 
+    该方法就是执行渲染watch，watcher.update()来达到出发更新组件的效果
+		
+		3：再次执行createComponent(), 执行到resolveAsyncComponent函数的时候，判断有没有factory.resolved方法，如果有了
+		就直接返回factory.resolved给Ctor,这时候Ctor就是VueComponent函数，执行正常组件的操作
+		最终生成vnode
 
-
+    其中owners是当前的vue实力，是通过currentRenderingInstance来获取的
 		*/
 		
 		/**

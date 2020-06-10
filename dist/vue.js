@@ -3657,7 +3657,6 @@
     }
 
     if (owner && !isDef(factory.owners)) {
-      debugger
       var owners = factory.owners = [owner];
       var sync = true;
       var timerLoading = null;
@@ -3684,7 +3683,6 @@
       };
 
       var resolve = once(function (res) {
-        debugger
         // cache resolved
         factory.resolved = ensureCtor(res, baseCtor);
         // invoke callbacks only if this is not a synchronous resolve

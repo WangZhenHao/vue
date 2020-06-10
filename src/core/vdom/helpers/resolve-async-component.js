@@ -63,7 +63,6 @@ export function resolveAsyncComponent (
   }
 
   if (owner && !isDef(factory.owners)) {
-    debugger
     const owners = factory.owners = [owner]
     let sync = true
     let timerLoading = null
@@ -90,7 +89,6 @@ export function resolveAsyncComponent (
     }
 
     const resolve = once((res: Object | Class<Component>) => {
-      debugger
       // cache resolved
       factory.resolved = ensureCtor(res, baseCtor)
       // invoke callbacks only if this is not a synchronous resolve

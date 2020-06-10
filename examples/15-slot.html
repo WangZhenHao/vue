@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="../dist/vue.js"></script>
+</head>
+<body>
+	<div id="app">
+		<div>
+			<app-layout>
+				<h1 slot="header">{{ title }}</h1>
+			</app-layout>
+		</div>
+	</div>
+	<script>
+		
+		/** 
+  
+    (function anonymous(
+		) {
+		with(this){return _c('div',{attrs:{"id":"app"}},[_c('div',[_c('app-layout',[_c('h1',{attrs:{"slot":"header"},slot:"header"},[_v(_s(title))])])],1)])}
+		})
+
+		ƒ anonymous(
+		) {
+		with(this){return _c('div',[_c('header',[_t("header")],2)])}
+		}
+
+		 */
+
+		let AppLayout = {
+			template: `
+				<div>
+					<header><slot name="header"></slot></header>
+				</div>
+			`
+		}
+
+		var app = new Vue({
+			el: '#app',
+			data() {
+				return {
+					title: '我是标题',
+					msg: '我是内容',
+					desc: '其他信息'
+				}
+			},
+			components: {
+				AppLayout
+			}
+		})
+	</script>
+</body>
+</html>
