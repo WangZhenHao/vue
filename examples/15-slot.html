@@ -7,32 +7,29 @@
 </head>
 <body>
 	<div id="app">
-		<div>
-			<app-layout>
-				<h1 slot="header">{{ title }}</h1>
-			</app-layout>
-		</div>
+		<app-layout>
+			<p>我是默认</p><h1 slot="header">{{ title }}</h1><p slot="footer">{{ desc }}</p>
+		</app-layout>
 	</div>
 	<script>
-		
 		/** 
   
-    (function anonymous(
+		(function anonymous(
 		) {
-		with(this){return _c('div',{attrs:{"id":"app"}},[_c('div',[_c('app-layout',[_c('h1',{attrs:{"slot":"header"},slot:"header"},[_v(_s(title))])])],1)])}
+		with(this){return _c('div',{attrs:{"id":"app"}},[_c('app-layout',[_c('p',[_v("我是默认")]),_c('h1',{attrs:{"slot":"header"},slot:"header"},[_v(_s(title))]),_c('p',{attrs:{"slot":"footer"},slot:"footer"},[_v(_s(desc))])])],1)}
 		})
 
-		ƒ anonymous(
+		(function anonymous(
 		) {
-		with(this){return _c('div',[_c('header',[_t("header")],2)])}
-		}
+		with(this){return _c('div',[_c('header',[_t("header")],2),_v(" "),_c('footer',[_t("footer")],2)])}
+		})
 
 		 */
 
 		let AppLayout = {
 			template: `
 				<div>
-					<header><slot name="header"></slot></header>
+				    <div>组件内部内容</div><header><slot name="header"></slot></header><footer><slot name="footer"></slot></footer>
 				</div>
 			`
 		}
