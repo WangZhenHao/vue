@@ -2683,6 +2683,7 @@
     props,
     bindObject
   ) {
+    debugger
     var scopedSlotFn = this.$scopedSlots[name];
     var nodes;
     if (scopedSlotFn) { // scoped slot
@@ -5001,6 +5002,7 @@
 
   function initMixin (Vue) {
     Vue.prototype._init = function (options) {
+      debugger
       var vm = this;
       // a uid
       vm._uid = uid$2++;
@@ -5943,7 +5945,6 @@
       ownerArray,
       index
     ) {
-      debugger
       if (isDef(vnode.elm) && isDef(ownerArray)) {
         // This vnode was used in a previous render!
         // now it's used as a new node, overwriting its elm would cause
@@ -6509,7 +6510,6 @@
     }
 
     return function patch (oldVnode, vnode, hydrating, removeOnly) {
-      debugger
       if (isUndef(vnode)) {
         if (isDef(oldVnode)) { invokeDestroyHook(oldVnode); }
         return
@@ -12062,7 +12062,7 @@
         }
       }
     }
-    
+
     return mount.call(this, el, hydrating)
   };
 

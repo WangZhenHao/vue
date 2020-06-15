@@ -8,20 +8,43 @@
 <body>
 	<div id="app">
 		<app-layout>
-			<p>我是默认</p><h1 slot="header">{{ title }}</h1><p slot="footer">{{ desc }}</p>
+			<p>组件外部</p><h1 slot="header">{{ title }}</h1><p slot="footer">{{ desc }}</p>
 		</app-layout>
 	</div>
 	<script>
 		/** 
-  
-		(function anonymous(
-		) {
-		with(this){return _c('div',{attrs:{"id":"app"}},[_c('app-layout',[_c('p',[_v("我是默认")]),_c('h1',{attrs:{"slot":"header"},slot:"header"},[_v(_s(title))]),_c('p',{attrs:{"slot":"footer"},slot:"footer"},[_v(_s(desc))])])],1)}
+  		vue中的solt原理：
+  		1： 编译html模板生成vnode, 在执行到_c('app-layout'...)得时候，执行createComponent逻辑，该虚拟dom没有children值，而是把主要的数据赋值给componentOptions，componentOptions：{ Ctor, propsData, listeners, tag, children }
+        2：生成vnode之后，就可以执行patch过程了
+        2-1： 在执行到vue-component-1-app-layout的时候，执行初始化工作this.init(options),其中执行一个initRender(vm)方法
+        2-2： intiRender方法
+
+		(function anonymous() {
+		    with(this) {
+		        return _c('div', {
+		            attrs: {
+		                "id": "app"
+		            }
+		        },
+		        [_c('app-layout', [_c('p', [_v("我是默认")]), _c('h1', {
+		            attrs: {
+		                "slot": "header"
+		            },
+		            slot: "header"
+		        },
+		        [_v(_s(title))]), _c('p', {
+		            attrs: {
+		                "slot": "footer"
+		            },
+		            slot: "footer"
+		        },
+		        [_v(_s(desc))])])], 1)
+		    }
 		})
 
 		(function anonymous(
 		) {
-		with(this){return _c('div',[_c('header',[_t("header")],2),_v(" "),_c('footer',[_t("footer")],2)])}
+		with(this){return _c('div',[_c('div',[_v("组件内部内容")]),_c('header',[_t("header")],2),_c('footer',[_t("footer")],2)])}
 		})
 
 		 */
