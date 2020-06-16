@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="../dist/vue.js"></script>
+</head>
+<body>
+	<div id="app">
+		<child>
+			<template slot-scope="props">
+			  <p>hello from prant</p><p> {{ props.text + '-' + props.msg }} </p>
+			</template>
+		</child>
+	</div>
+	<script>
+		/**
+
+		vue中的scopedSlot原理：
+        1： 先执行render函数，应为有一个作用域插槽，所以会执行_u函数，实际就是resolveScopedSlots，这个函数很简单，返回一个对象，键名是key的值，键值是fn的值,重新赋值给scopedSlots
+        1-2： 生成vnode之后，把scopedSlots赋值给data
+
+        2: 执行组件的初始化new VueComponent(),也就是this.init(options),执行完初始化之后，得到child示例，直接执行child.$mount()方法
+        2-1：$mount方法就是生成虚拟node和编译成真实dom的过程
+        2-2：$mount方法会执行this._render方法,其中判断有没有parentVnode属性，如果有就会对插槽进行合并，执行normalizeScopedSlots方法
+        合并_parentVnode.data.scopedSlots, vm.$slots, vm.$scopedSlots方法属性， 这时候主要对_parentVnode.data.scopedSlots里面的内容进行处理
+
+        2-3：循环遍历，最终得到一个对象，该对象key是default，value就是一个函数，return出去，最终赋值给 vm.$scopedSlots
+
+        3：执行render方法，该函数是ast语法树，会执行到_t方法，而_t方法实际上就是renderSlot函数，返回虚拟vnode
+        3-1：这时候作用域的虚拟vnode，就成功赋值给子组件里面的虚拟vnode了
+
+
+
+
+
+		(function anonymous() {
+		    with(this) {
+		        return _c('div', {
+		            attrs: {
+		                "id": "app"
+		            }
+		        }, [_c('child', {
+		            scopedSlots: _u([{
+		                key: "default",
+		                fn: function (props) {
+		                    return [_c('p', [_v("hello from prant")]), _c('p', [_v(" " + _s(props.text + '-' + props.msg) + " ")])]
+		                }
+		            }])
+		        })], 1)
+		    }
+		})
+
+		(function anonymous(
+		) { 
+		with(this){return _c('div',[_t("default",null,{"text":"hello","msg":msg})],2)}
+		})
+		*/
+		var child = {
+			template: `<div>
+				<slot text="hello" :msg="msg"
+				></slot>
+			</div>`,
+			data() {
+				return {
+					msg: 'Vue'
+				}
+			}
+		}
+
+		let vm = new Vue({
+			el: '#app',
+			components: {
+				child
+			}
+		})
+	</script>
+</body>
+</html>

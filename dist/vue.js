@@ -2898,6 +2898,7 @@
     hasDynamicKeys,
     contentHashKey
   ) {
+    
     res = res || { $stable: !hasDynamicKeys };
     for (var i = 0; i < fns.length; i++) {
       var slot = fns[i];
@@ -3120,6 +3121,7 @@
         var mountedNode = vnode; // work around flow
         componentVNodeHooks.prepatch(mountedNode, mountedNode);
       } else {
+      
         var child = vnode.componentInstance = createComponentInstanceForVnode(
           vnode,
           activeInstance
@@ -3183,7 +3185,7 @@
     children,
     tag
   ) {
-
+    // debugger
     if (isUndef(Ctor)) {
       return
     }
@@ -3547,6 +3549,7 @@
      * 
      */
     Vue.prototype._render = function () {
+      debugger
       var vm = this;
       var ref = vm.$options;
       var render = ref.render;
@@ -5002,7 +5005,7 @@
 
   function initMixin (Vue) {
     Vue.prototype._init = function (options) {
-      debugger
+      // debugger
       var vm = this;
       // a uid
       vm._uid = uid$2++;
@@ -5945,6 +5948,7 @@
       ownerArray,
       index
     ) {
+      debugger
       if (isDef(vnode.elm) && isDef(ownerArray)) {
         // This vnode was used in a previous render!
         // now it's used as a new node, overwriting its elm would cause
@@ -6510,6 +6514,7 @@
     }
 
     return function patch (oldVnode, vnode, hydrating, removeOnly) {
+      // debugger
       if (isUndef(vnode)) {
         if (isDef(oldVnode)) { invokeDestroyHook(oldVnode); }
         return

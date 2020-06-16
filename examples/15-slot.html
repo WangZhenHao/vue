@@ -17,7 +17,14 @@
   		1： 编译html模板生成vnode, 在执行到_c('app-layout'...)得时候，执行createComponent逻辑，该虚拟dom没有children值，而是把主要的数据赋值给componentOptions，componentOptions：{ Ctor, propsData, listeners, tag, children }
         2：生成vnode之后，就可以执行patch过程了
         2-1： 在执行到vue-component-1-app-layout的时候，执行初始化工作this.init(options),其中执行一个initRender(vm)方法
-        2-2： intiRender方法
+        2-2： intiRender方法，该方法中的resolveSlots函数，会处理slot的数据，处理成对象键值对的形式，键名就是定义好的插槽名称，值就是对应的虚拟vnode,最终赋值给vm.$solts
+		2-2-1: resolveSlots接受两个参数，chilren和context，children就是app-layout包裹的vnode,context就是当前的上下文
+
+        3-1: 在执行到_render得时候，如果存在_parentVnode，就会对$scopedSlots进行复制，该值主要是有$slots的键值对遍历而得到的，最终放回对象为键值对，键名为，定义好的插槽，值是一个proxyNormalSlot函数
+        3-2： 在生成vnode的时候，执行到了_t,实质上_t就是renderSlot函数，该函数的作用主要是执行$scopedSlots里面值的函数，最终返回对应的$slots里面的vnode
+        3-3：最终输出了vnode,该vnode就是对应组件插槽的vnode,正确处理好vnode之后，又走一次patch
+
+
 
 		(function anonymous() {
 		    with(this) {
@@ -26,7 +33,7 @@
 		                "id": "app"
 		            }
 		        },
-		        [_c('app-layout', [_c('p', [_v("我是默认")]), _c('h1', {
+		        [_c('app-layout', [_c('p', [_v("组件外部")]), _c('h1', {
 		            attrs: {
 		                "slot": "header"
 		            },
