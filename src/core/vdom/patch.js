@@ -133,7 +133,7 @@ export function createPatchFunction (backend) {
     ownerArray,
     index
   ) {
-    debugger
+    // debugger
     if (isDef(vnode.elm) && isDef(ownerArray)) {
       // This vnode was used in a previous render!
       // now it's used as a new node, overwriting its elm would cause

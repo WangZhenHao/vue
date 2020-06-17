@@ -2683,7 +2683,7 @@
     props,
     bindObject
   ) {
-    debugger
+    // debugger
     var scopedSlotFn = this.$scopedSlots[name];
     var nodes;
     if (scopedSlotFn) { // scoped slot
@@ -3549,7 +3549,7 @@
      * 
      */
     Vue.prototype._render = function () {
-      debugger
+      // debugger
       var vm = this;
       var ref = vm.$options;
       var render = ref.render;
@@ -5948,7 +5948,7 @@
       ownerArray,
       index
     ) {
-      debugger
+      // debugger
       if (isDef(vnode.elm) && isDef(ownerArray)) {
         // This vnode was used in a previous render!
         // now it's used as a new node, overwriting its elm would cause
