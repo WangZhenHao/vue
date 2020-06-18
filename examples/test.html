@@ -7,7 +7,7 @@
 </head>
 <body>
   <div id="app">
-    <!-- {{ form.test1 }} -- {{ form.test2 }} -->
+    <button @click="test">sdfsadfsdf</button>
   </div>
 
   <script>
@@ -17,20 +17,13 @@
     let vm = new Vue({
       el: '#app',
       data: {
-        form: {},
-        msg: 112
       },
       mounted() {
-        this.form = {
-          test1: '1',
-          test2: '2'
+      },
+      methods: {
+        test() {
+          alert(1)
         }
-
-        // setTimeout(() => {
-        //   this.form.test2 = '12121122112'
-        // }, 3000)
-        
-
       }
     })
 
@@ -38,3 +31,5 @@
   </script>
 </body>
 </html>
+
+

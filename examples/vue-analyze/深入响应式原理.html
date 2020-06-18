@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <script src="../../dist/vue.js"></script>
+</head>
+<body>
+  <div id="app">
+    {{ form.test1 }} {{ form.test2 }} {{ form.test3 }}
+  </div>
+
+  <script>
+    /**
+     
+    在Vue开发的时候，data初始化一个对象没有定义任何属性，经过变量赋值的之后，不需要$set方法，
+    该对象下面的属性就也能变成响应式属性
+    
+    */
+    
+
+    let vm = new Vue({
+      el: '#app',
+      data: {
+        form: {},
+      },
+      mounted() {
+        this.form = {
+          test1: '1',
+        }
+        this.form.test2 = '2'
+        
+        setTimeout(() => {
+          this.form.test3 = '3'
+        }, 3000)
+        
+
+      }
+    })
+
+  </script>
+</body>
+</html>
+
+

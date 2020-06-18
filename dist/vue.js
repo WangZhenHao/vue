@@ -1036,6 +1036,8 @@
       enumerable: true,
       configurable: true,
       get: function reactiveGetter () {
+        // debugger
+        console.log(obj, key);
         var value = getter ? getter.call(obj) : val;
         if (Dep.target) {
           dep.depend();
@@ -1049,6 +1051,8 @@
         return value
       },
       set: function reactiveSetter (newVal) {
+        // debugger
+        // console.log(obj, key)
         var value = getter ? getter.call(obj) : val;
         /* eslint-disable no-self-compare */
         if (newVal === value || (newVal !== newVal && value !== value)) {
