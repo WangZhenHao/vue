@@ -26,12 +26,14 @@
       },
       mounted() {
         this.form = {
-          test1: '1',
+          test1: 1,
+          test2: 2,
         }
-        this.form.test2 = '2'
+       
         
         setTimeout(() => {
-          this.form.test3 = '3'
+          this.form.test3 = 3
+          this.form.test4 = 4
         }, 3000)
         
 

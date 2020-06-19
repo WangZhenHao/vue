@@ -1,35 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Document</title>
-  <script src="../dist/vue.js"></script>
-</head>
-<body>
-  <div id="app">
-    <button @click="test">sdfsadfsdf</button>
-  </div>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <script src="../dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <button @click="changeTest1">changeTest1</button>
+      <button @click="changeTest2">changeTest2</button>
+      <div>
+        {{ form.test1 }} {{ form.test2 }}
+      </div>
+    </div>
 
-  <script>
-    
-    
+    <script>
+      let vm = new Vue({
+        el: "#app",
+        data: {
+          form: {},
+        },
+        mounted() {
+          this.form = {
+            test1: 1,
+          };
 
-    let vm = new Vue({
-      el: '#app',
-      data: {
-      },
-      mounted() {
-      },
-      methods: {
-        test() {
-          alert(1)
-        }
-      }
-    })
+          this.form.test2 = 2;
+        },
+        methods: {
+          changeTest2() {
+            this.form.test2 = 3;
+          },
+          changeTest1() {
+            this.form.test1 = 4;
+          },
+        },
+      });
 
-    console.log(vm)
-  </script>
-</body>
+      console.log(vm);
+    </script>
+  </body>
 </html>
-
-
