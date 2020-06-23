@@ -1,30 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
 	<script src="../dist/vue.js"></script>
 </head>
+
 <body>
 	<div id="app">
 		<app-layout>
-			<p>组件外部</p><h1 slot="header">{{ title }}</h1><p slot="footer">{{ desc }}</p>
+			<p>组件外部</p>
+			<h1 slot="header">{{ title }}</h1>
+			<p slot="footer">{{ desc }}</p>
 		</app-layout>
 	</div>
 	<script>
 		/** 
   		vue中的solt原理：
   		1： 编译html模板生成vnode, 在执行到_c('app-layout'...)得时候，执行createComponent逻辑，该虚拟dom没有children值，而是把主要的数据赋值给componentOptions，componentOptions：{ Ctor, propsData, listeners, tag, children }
-        2：生成vnode之后，就可以执行patch过程了
-        2-1： 在执行到vue-component-1-app-layout的时候，执行初始化工作this.init(options),其中执行一个initRender(vm)方法
-        2-2： intiRender方法，该方法中的resolveSlots函数，会处理slot的数据，处理成对象键值对的形式，键名就是定义好的插槽名称，值就是对应的虚拟vnode,最终赋值给vm.$solts
-		2-2-1: resolveSlots接受两个参数，chilren和context，children就是app-layout包裹的vnode,context就是当前的上下文
+			2：生成vnode之后，就可以执行patch过程了
+			2-1： 在执行到vue-component-1-app-layout的时候，执行初始化工作this.init(options),其中执行一个initRender(vm)方法
+			2-2： intiRender方法，该方法中的resolveSlots函数，会处理slot的数据，处理成对象键值对的形式，键名就是定义好的插槽名称，值就是对应的虚拟vnode,最终赋值给vm.$solts
+	2-2-1: resolveSlots接受两个参数，chilren和context，children就是app-layout包裹的vnode,context就是当前的上下文
 
-        3-1: 在执行到_render得时候，如果存在_parentVnode，就会对$scopedSlots进行复制，该值主要是有$slots的键值对遍历而得到的，最终放回对象为键值对，键名为，定义好的插槽，值是一个proxyNormalSlot函数
-        3-2： 在生成vnode的时候，执行到了_t,实质上_t就是renderSlot函数，该函数的作用主要是执行$scopedSlots里面值的函数，最终返回对应的$slots里面的vnode
-        3-3：最终输出了vnode,该vnode就是对应组件插槽的vnode,正确处理好vnode之后，又走一次patch
+			3-1: 在执行到_render得时候，如果存在_parentVnode，就会对$scopedSlots进行复制，该值主要是有$slots的键值对遍历而得到的，最终放回对象为键值对，键名为，定义好的插槽，值是一个proxyNormalSlot函数
+			3-2： 在生成vnode的时候，执行到了_t,实质上_t就是renderSlot函数，该函数的作用主要是执行$scopedSlots里面值的函数，最终返回对应的$slots里面的vnode
+			3-3：最终输出了vnode,该vnode就是对应组件插槽的vnode,正确处理好vnode之后，又走一次patch
 
-
+      总结：先执行第一个render函数，生成vnode,然后开始走patch过程，patch过程遇到了app-layout,判断是一个组件，然后就又走一次	Vue的初始化，在生成vnode的过程中，会拿到componentOptions里面的vnode，赋值给组件作为子vnode
 
 		(function anonymous() {
 		    with(this) {
@@ -79,4 +83,5 @@
 		})
 	</script>
 </body>
+
 </html>
