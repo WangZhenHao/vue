@@ -1037,7 +1037,7 @@
       configurable: true,
       get: function reactiveGetter () {
         // debugger
-        console.log(obj, key);
+        // console.log(obj, key)
         var value = getter ? getter.call(obj) : val;
         if (Dep.target) {
           dep.depend();
@@ -12061,7 +12061,7 @@
         }, this);
         var render = ref.render;
         var staticRenderFns = ref.staticRenderFns;
-        console.log(render);
+        // console.log(render)
         options.render = render;
         options.staticRenderFns = staticRenderFns;
         /* istanbul ignore if */

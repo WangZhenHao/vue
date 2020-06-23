@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../../dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+      <el-table>
+        <table-column child-name="wzh"></table-column>
+      </el-table>
+      <table-column child-name="wzh"></table-column>
+    </div>
+    <script>
+        var elTable = {
+          data() {
+            return {
+              cell: []
+            }
+          },
+          template: `
+            <div>
+              <p v-for="item in cell">{{ item.name }}</p>
+            </div>
+          `,
+          created() {
+            // console.log(this)
+          }
+        }
+
+        var tableColumn = {
+          // template: `<div></div>`,
+          props: {
+            childName: {
+              type: String,
+              default: ''
+            }
+          },
+          data() {
+            return {
+
+            }
+          },
+          created() {
+            alert(1)
+            console.log(this.getParent())
+          },
+          methods: {
+            getParent() {
+              return this.$parent;
+            }
+          },
+          render(h) {
+            console.log(this.$slots.default)
+            return h('div')
+          }
+        }
+
+        var app = new Vue({
+          el: '#app',
+          components: {
+            elTable,
+            tableColumn
+          }
+        })
+    </script>
+</body>
+</html>
