@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="../dist/vue.js"></script>
+</head>
+<body>
+	<div id="app">
+    <child></child>
+    <child></child>
+    <child></child>
+    <child></child>
+	</div>
+
+	<script>
+    /**
+    Vue.use原理
+
+    1：该方法为Vue的全局方法
+    2：先定义this._installedPlugins为一个数组，如果发现该数组里面有了该插件，直接return出去
+    3：定义args变量来处理arguments参数
+    4：如果plugin（传入的参数）用install方法，就直接执行plugin.install,参数是plugin，和args
+    4-1：install方法实际上就是我们说写的一个函数，接受的参数就是Vue函数
+    4-2： 如果plugin是一个函数，直接执行plugin方法，参数是null，args
+    5：向installedPlugins数组中新增改插件
+
+    Vue.use方法很简单，就是执行install方法，且保证install的第一个参数就是Vue函数，这样子install就可以做很多事了
+
+
+    */
+    var child = {
+      template: `<div>我是组件</div>`
+    }
+
+    var install = function(Vue) {
+      Vue.component('child', child)
+    }
+
+    child.install = install;
+    Vue.use(child)
+
+	  let vm = new Vue({
+			el: '#app',
+    })
+    
+    
+	</script>
+</body>
+</html>
