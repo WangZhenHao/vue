@@ -51,7 +51,7 @@ export function _createElement (
   children?: any,
   normalizationType?: number
 ): VNode | Array<VNode> {
-  
+  // debugger
   if (isDef(data) && isDef((data: any).__ob__)) {
     process.env.NODE_ENV !== 'production' && warn(
       `Avoid using observed data object as vnode data: ${JSON.stringify(data)}\n` +
@@ -94,6 +94,7 @@ export function _createElement (
     children = simpleNormalizeChildren(children)
   }
   let vnode, ns
+  // debugger
   if (typeof tag === 'string') {
     let Ctor
     ns = (context.$vnode && context.$vnode.ns) || config.getTagNamespace(tag)
@@ -110,6 +111,7 @@ export function _createElement (
         undefined, undefined, context
       )
     } else if ((!data || !data.pre) && isDef(Ctor = resolveAsset(context.$options, 'components', tag))) {
+      // debugger
       // component
       vnode = createComponent(Ctor, data, context, children, tag)
     } else {
@@ -123,6 +125,7 @@ export function _createElement (
     }
   } else {
     // direct component options / constructor
+    
     vnode = createComponent(tag, data, context, children)
   }
   if (Array.isArray(vnode)) {

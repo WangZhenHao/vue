@@ -3054,6 +3054,7 @@
     contextVm,
     children
   ) {
+    // debugger
     var options = Ctor.options;
     var props = {};
     var propOptions = options.props;
@@ -3241,7 +3242,7 @@
 
     // extract props
     var propsData = extractPropsFromVNodeData(data, Ctor, tag);
-
+    // debugger
     // functional component
     if (isTrue(Ctor.options.functional)) {
       return createFunctionalComponent(Ctor, propsData, data, context, children)
@@ -3381,7 +3382,7 @@
     children,
     normalizationType
   ) {
-    
+    // debugger
     if (isDef(data) && isDef((data).__ob__)) {
        warn(
         "Avoid using observed data object as vnode data: " + (JSON.stringify(data)) + "\n" +
@@ -3424,6 +3425,7 @@
       children = simpleNormalizeChildren(children);
     }
     var vnode, ns;
+    // debugger
     if (typeof tag === 'string') {
       var Ctor;
       ns = (context.$vnode && context.$vnode.ns) || config.getTagNamespace(tag);
@@ -3440,6 +3442,7 @@
           undefined, undefined, context
         );
       } else if ((!data || !data.pre) && isDef(Ctor = resolveAsset(context.$options, 'components', tag))) {
+        // debugger
         // component
         vnode = createComponent(Ctor, data, context, children, tag);
       } else {
@@ -3453,6 +3456,7 @@
       }
     } else {
       // direct component options / constructor
+      
       vnode = createComponent(tag, data, context, children);
     }
     if (Array.isArray(vnode)) {
@@ -3553,6 +3557,7 @@
      * 
      */
     Vue.prototype._render = function () {
+      // debugger
       // debugger
       var vm = this;
       var ref = vm.$options;
@@ -6020,6 +6025,7 @@
 
     function createComponent (vnode, insertedVnodeQueue, parentElm, refElm) {
       var i = vnode.data;
+      // debugger
       if (isDef(i)) {
         var isReactivated = isDef(vnode.componentInstance) && i.keepAlive;
         
@@ -12021,6 +12027,7 @@
     }
 
     var options = this.$options;
+    // debugger
     // resolve template/el and convert to render function
     if (!options.render) {
       var template = options.template;

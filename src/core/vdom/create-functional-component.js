@@ -98,6 +98,7 @@ export function createFunctionalComponent (
   contextVm: Component,
   children: ?Array<VNode>
 ): VNode | Array<VNode> | void {
+  // debugger
   const options = Ctor.options
   const props = {}
   const propOptions = options.props

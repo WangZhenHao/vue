@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="../dist/vue.js"></script>
+</head>
+<body>
+	<div id="app">
+		 <test></test>
+		 <t></t>
+	<script>
+		/**
+		  
+		 */
+		var bus = new Vue();
+		// var bus1 = new Vue();
+		var test = {
+			template: `
+        <div>
+        	<button @click="toEmit" type="button">test</button>
+        </div>
+			`,
+			data: function() {
+				return {
+					count: 0
+				}
+			},
+			created() {
+				// console.log('components1')
+				// bus.$emit('to-input', 1)
+			},
+			mounted() {
+				// console.log('components2')
+			},
+			methods: {
+				toEmit() {
+					this.count++;
+					bus.$emit('to-input', this.count);
+				}
+			}
+		}
+		var t = {
+		  template: `<div><button type="button">test2</button></div>`,
+		  created() {
+		  	bus.$on('to-input', function(val) {
+		  		// debugger
+					alert(val)
+				})
+		  }
+		}
+		var app = new Vue({
+			el: '#app',
+			data: {
+				msg: 'parent'
+			},
+			methods: {
+			},
+			created() {
+				// console.log('praent1')
+				// bus.$on('to-input', function() {
+				// 	alert(1)
+				// })
+			},
+			mounted() {
+				// console.log('praent2')
+			},
+			components: {
+				test,
+				t
+			}
+		})
+	</script>
+</body>
+</html>

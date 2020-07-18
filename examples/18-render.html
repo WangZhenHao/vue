@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="../dist/vue.js"></script>
+</head>
+<body>
+
+	<div id="app">
+		 <child></child>
+	</div>
+	<script>
+		/**
+     render函数执行原理
+		 1： 生成ast
+		 2： ast变成可执行函数，即render函数，执行__init()方法
+		 3： 发现child是一个组件，所有就执createComponent方法，接受参数是Ctor, data, context, children, tag
+		 4: 如果发现Ctor中定义了functional,说明是定义了render函数，就是执行createFunctionalComponent方法
+		 4-1：createFunctionalComponent函数是返回一个虚拟dom, 其中处理好data, props,children
+		 4-2: 其中render函数是接受两个参数的
+		 4-3： render函数下面可以继续添加子组件，第一个参数可以接受一个子组件
+
+		 而没有定义functional的，则只会接受一个参数
+		
+
+		 */
+		var test = {
+			template: `<div>
+				22222
+			</div>`
+		}
+		var child = {
+			// template: `<div class="active-class">11111</div>`,
+			functional: true,
+			render(h, ref) {
+				return h('div', { staticClass: "active-class"}, [ref._v('11111')])
+				// return h(test, { staticClass: "active-class"}, [ref._v('11111')])
+			}
+		}
+
+		var app = new Vue({
+			el: '#app',
+	    components: {
+	    	child
+	    },
+			data: {
+				
+			},
+			mounted() {
+			  
+			},
+
+		})
+	</script>
+</body>
+</html>
