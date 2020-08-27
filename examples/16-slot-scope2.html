@@ -7,9 +7,9 @@
 </head>
 <body>
 	<div id="app">
-		<child v-for="item in list" :item="item">
+		<child v-for="item in list">
 			<template slot-scope="props">
-				<h5>{{ props.name }}</h5>
+				<h5>{{ props }}</h5>
 			</template>
 		</child>
 	</div>
@@ -56,10 +56,22 @@
 		        }), 1)
 		    }
 		})
+
+		ƒ anonymous(
+		) {
+		with(this){return _c('span',[_t("default",null,{"item":11})],2)}
+		}
 		*/
 		var child = {
-			// template: `<div><slot></slot></div>`,
-			props: ['item'],
+			// template: `<span><slot :item="11"></slot></span>`,
+			props: {
+			  item: {
+			  	type: Object,
+			  	default() {
+			  		return {}
+			  	}
+			  }
+			},
 			render(h) {
 			  // console.log(this.$scopedSlots.default(this.item))
 			  // // this.props = this.item;

@@ -30,7 +30,7 @@
 
         3：执行render方法，该函数是ast语法树，会执行到_t方法，而_t方法实际上就是renderSlot函数，返回虚拟vnode
         3-1：这时候作用域的虚拟vnode，就成功赋值给子组件里面的虚拟vnode了
-
+        4: 关于props，是由_t传过来的，_t由三个参数是"default", null, {"text":"hello","msg":msg}
 
 
 		总结：

@@ -2688,7 +2688,7 @@
     props,
     bindObject
   ) {
-    debugger
+    // debugger
     var scopedSlotFn = this.$scopedSlots[name];
     var nodes;
     if (scopedSlotFn) { // scoped slot
@@ -2903,7 +2903,7 @@
     hasDynamicKeys,
     contentHashKey
   ) {
-    debugger
+    // debugger
     res = res || { $stable: !hasDynamicKeys };
     for (var i = 0; i < fns.length; i++) {
       var slot = fns[i];

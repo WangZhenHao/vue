@@ -7,7 +7,7 @@ export function resolveScopedSlots (
   hasDynamicKeys?: boolean,
   contentHashKey?: number
 ): { [key: string]: Function, $stable: boolean } {
-  debugger
+  // debugger
   res = res || { $stable: !hasDynamicKeys }
   for (let i = 0; i < fns.length; i++) {
     const slot = fns[i]
