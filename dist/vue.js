@@ -1918,6 +1918,7 @@
   var pending = false;
 
   function flushCallbacks () {
+    debugger
     pending = false;
     var copies = callbacks.slice(0);
     callbacks.length = 0;
@@ -2687,7 +2688,7 @@
     props,
     bindObject
   ) {
-    // debugger
+    debugger
     var scopedSlotFn = this.$scopedSlots[name];
     var nodes;
     if (scopedSlotFn) { // scoped slot
@@ -2902,7 +2903,7 @@
     hasDynamicKeys,
     contentHashKey
   ) {
-    
+    debugger
     res = res || { $stable: !hasDynamicKeys };
     for (var i = 0; i < fns.length; i++) {
       var slot = fns[i];
@@ -3563,6 +3564,7 @@
       var ref = vm.$options;
       var render = ref.render;
       var _parentVnode = ref._parentVnode;
+      console.log(render);
       if (_parentVnode) {
         vm.$scopedSlots = normalizeScopedSlots(
           _parentVnode.data.scopedSlots,

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="../dist/vue.js"></script>
+</head>
+<body>
+	<div id="app">
+		<child v-for="item in list" :item="item">
+			<template slot-scope="props">
+				<h5>{{ props.name }}</h5>
+			</template>
+		</child>
+	</div>
+
+	<script>
+		/**
+
+		vue中的scopedSlot原理：
+        1： 先执行render函数，应为有一个作用域插槽，所以会执行_u函数，实际就是resolveScopedSlots，这个函数很简单，返回一个对象，键名是key的值，键值是fn的值,重新赋值给scopedSlots
+        1-2： 生成vnode之后，把scopedSlots赋值给data
+
+        2: 执行组件的初始化new VueComponent(),也就是this.init(options),执行完初始化之后，得到child示例，直接执行child.$mount()方法
+        2-1：$mount方法就是生成虚拟node和编译成真实dom的过程
+        2-2：$mount方法会执行this._render方法,其中判断有没有parentVnode属性，如果有就会对插槽进行合并，执行normalizeScopedSlots方法
+        合并_parentVnode.data.scopedSlots, vm.$slots, vm.$scopedSlots方法属性， 这时候主要对_parentVnode.data.scopedSlots里面的内容进行处理
+
+        2-3：循环遍历，最终得到一个对象，该对象key是default，value就是一个函数，return出去，最终赋值给 vm.$scopedSlots
+
+        3：执行render方法，该函数是ast语法树，会执行到_t方法，而_t方法实际上就是renderSlot函数，返回虚拟vnode
+        3-1：这时候作用域的虚拟vnode，就成功赋值给子组件里面的虚拟vnode了
+
+
+
+		总结：
+		普通插槽和作用域插槽的实现，它们有一个很大的差别是数据作用域，普通插槽是在父组件编译和渲染阶段生成 vnodes，所以数据的作用域是父组件实例，子组件渲染的时候直接拿到这些渲染好的 vnodes。而对于作用域插槽，父组件在编译和渲染阶段并不会直接生成 vnodes，而是在父节点 vnode 的 data 中保留一个 scopedSlots 对象，存储着不同名称的插槽以及它们对应的渲染函数，只有在编译和渲染子组件阶段才会执行这个渲染函数生成 vnodes，由于是在子组件环境执行的，所以对应的数据作用域是子组件实例。
+
+		(function anonymous() {
+		    with(this) {
+		        return _c('div', {
+		            attrs: {
+		                "id": "app"
+		            }
+		        },
+		        _l((list),
+		        function(item) {
+		            return _c('child', {
+		                scopedSlots: _u([{
+		                    key: "default",
+		                    fn: function(props) {
+		                        return [_c('h5', [_v(_s(props.name))])]
+		                    }
+		                }], null, true)
+		            })
+		        }), 1)
+		    }
+		})
+		*/
+		var child = {
+			// template: `<div><slot></slot></div>`,
+			props: ['item'],
+			render(h) {
+			  // console.log(this.$scopedSlots.default(this.item))
+			  // // this.props = this.item;
+			  // debugger
+			  return h('span', {}, this.$scopedSlots.default(this.item))
+			},
+			data() {
+				return {}
+			}
+		}
+
+		let vm = new Vue({
+			el: '#app',
+			data() {
+			  return {
+			  	list: [
+				  	{ name: 'wzh' },
+				  	{ name: 'xm' },
+				  	{ name: 'xh' }
+				  ]
+			  }
+			},
+			components: {
+				child
+			}
+		})
+	</script>
+</body>
+</html>

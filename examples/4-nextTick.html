@@ -11,7 +11,21 @@
 	</div>
 	<script>
    /**
+     nextTick实现原理：
 
+     1： nextTick函数接受两个参数第一个是函数，第二个是上下文
+	  
+	 2: nextTick(() => {})的时候，会先把该函数添加到callbacks数组里面，添加完之后就会执行判断pending
+	 是否为false，如果是false，就会指向timeFunc方法
+
+	 3：timeFunc方法是一个异步执行函数，它是经过一系列降级处理而得到的
+	 第一步先判断支不支持Promise，如果支持使用promise
+	 第二部判断是否支持MutationObserver，如果支持使用MutationObserver
+	 第三部判断是否支持setImmediate，如果支持，使用setImmediate
+	 最后就会使用setTimout来做异步处理
+
+
+	 nextTick实现原理很简单，主要的目的就是为了等到视图更新完成之后，能拿到dom；
     */
 		var app = new Vue({
 			el: '#app',
@@ -22,9 +36,13 @@
 			},
 			
 			mounted() {
-				setTimeout(() => {
-					
-				}, 1000)
+				this.$nextTick(() => {
+					console.log(1)
+				})
+
+				this.$nextTick(() => {
+					console.log(2)
+				})
 			},
 		})
 	</script>
