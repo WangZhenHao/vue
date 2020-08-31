@@ -22,7 +22,8 @@
 		 4-3： render函数下面可以继续添加子组件，第一个参数可以接受一个子组件
 
 		 而没有定义functional的，则只会接受一个参数
-		
+		 
+		 4-3-1： 如果用functional为true，在子组件渲染的时候，就不会执行_init()方法
 
 		 */
 		var test = {
@@ -35,8 +36,10 @@
 			functional: true,
 			render(h, ref) {
 				return h('div', { staticClass: "active-class"}, [ref._v('11111')])
-				// return h(test, { staticClass: "active-class"}, [ref._v('11111')])
-			}
+			},
+			// render(h, ref) {
+			// 	return h('div', { staticClass: "active-class"})
+			// }
 		}
 
 		var app = new Vue({

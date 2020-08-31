@@ -107,7 +107,7 @@ export function createComponent (
   children: ?Array<VNode>,
   tag?: string
 ): VNode | Array<VNode> | void {
-  // debugger
+  debugger
   if (isUndef(Ctor)) {
     return
   }

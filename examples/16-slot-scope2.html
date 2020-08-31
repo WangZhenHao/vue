@@ -7,7 +7,7 @@
 </head>
 <body>
 	<div id="app">
-		<child v-for="item in list">
+		<child v-for="item in list" :item="item">
 			<template slot-scope="props">
 				<h5>{{ props }}</h5>
 			</template>
