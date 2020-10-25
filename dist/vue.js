@@ -1918,7 +1918,7 @@
   var pending = false;
 
   function flushCallbacks () {
-    debugger
+    // debugger
     pending = false;
     var copies = callbacks.slice(0);
     callbacks.length = 0;
@@ -3078,7 +3078,7 @@
     );
     
     var vnode = options.render.call(null, renderContext._c, renderContext);
-    debugger
+    // debugger
     if (vnode instanceof VNode) {
       return cloneAndMarkFunctionalResult(vnode, data, renderContext.parent, options, renderContext)
     } else if (Array.isArray(vnode)) {
@@ -3191,7 +3191,7 @@
     children,
     tag
   ) {
-    debugger
+    // debugger
     if (isUndef(Ctor)) {
       return
     }
@@ -3443,7 +3443,7 @@
           undefined, undefined, context
         );
       } else if ((!data || !data.pre) && isDef(Ctor = resolveAsset(context.$options, 'components', tag))) {
-        debugger
+        // debugger
         // component
         vnode = createComponent(Ctor, data, context, children, tag);
       } else {

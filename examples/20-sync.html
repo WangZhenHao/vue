@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="../dist/vue.js"></script>
+</head>
+<body>
+
+	<div id="app">
+		<button @click="showComponents">现实子组件</button>
+		 <test :visiblity.sync="show"></test>
+	</div>
+	<script>
+		/**
+     
+		
+
+		 */
+		var test = {
+			props: {
+				visiblity: {
+					type: Boolean,
+					default: false
+				}
+			},
+			data() {
+			  return {
+
+			  }
+			},
+			template: `<div v-show="visiblity">
+				<button @click="hide">隐藏</button>
+			</div>`,
+			methods: {
+			  hide() {
+			  	// this.visiblity = false
+			  	this.$emit('update:visiblity', false)
+			  }
+			}
+		}
+
+		var app = new Vue({
+			el: '#app',
+		    components: {
+		    	test
+		    },
+			data() {
+				return {
+					show: false
+				}
+			},
+			mounted() {
+			  
+			},
+			methods: {
+				showComponents() {
+					this.show = true;
+				}
+			}
+
+		})
+	</script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="../dist/vue.js"></script>
+</head>
+<body>
+
+	<div id="app">
+		<button @click="showComponents">现实子组件</button>
+		 <test></test>
+	</div>
+	<script>
+		/**
+     
+		
+
+		 */
+		var test = {
+			inject: ['visiblity'],
+			data() {
+			  return {
+
+			  }
+			},
+			template: `<div v-show="visiblity">
+				<button @click="hide">隐藏</button>
+			</div>`,
+			methods: {
+			  hide() {
+			  	// this.visiblity = false
+			  	this.$emit('update:visiblity', false)
+			  }
+			}
+		}
+
+		var app = new Vue({
+			el: '#app',
+		    components: {
+		    	test
+		  },
+			provide: {
+				visiblity: true
+			},
+			data() {
+				return {
+				
+				}
+			},
+			methods: {
+				showComponents() {
+					console.log(this.visiblity)
+				}
+			}
+
+		})
+	</script>
+</body>
+</html>

@@ -11,7 +11,7 @@ const callbacks = []
 let pending = false
 
 function flushCallbacks () {
-  debugger
+  // debugger
   pending = false
   const copies = callbacks.slice(0)
   callbacks.length = 0

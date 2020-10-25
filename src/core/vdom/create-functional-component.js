@@ -121,7 +121,7 @@ export function createFunctionalComponent (
   )
   
   const vnode = options.render.call(null, renderContext._c, renderContext)
-  debugger
+  // debugger
   if (vnode instanceof VNode) {
     return cloneAndMarkFunctionalResult(vnode, data, renderContext.parent, options, renderContext)
   } else if (Array.isArray(vnode)) {
