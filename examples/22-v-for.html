@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <script src="../dist/vue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <div
+      v-for="item in list"
+      :key="item.name"
+      @click="test(item)"
+    >{{ item.name }}</div>
+  </div>
+  <script>
+    /**
+      (function anonymous() {
+          with(this) {
+              return _c('div', {
+                  attrs: {
+                      "id": "app"
+                  }
+              },
+              _l((list),
+              function(item) {
+                  return _c('div', {
+                      key: item.name,
+                      on: {
+                          "click": function($event) {
+                              return test(item)
+                          }
+                      }
+                  },
+                  [_v(_s(item.name))])
+              }), 0)
+          }
+      })
+
+    */
+    var app = new Vue({
+      el: '#app',
+      data: {
+        msg: 'parent',
+        list: [
+          { name: 'wzh' },
+          { name: 'xm' },
+          { name: 'wangg' }
+        ]
+      },
+      methods: {
+        test(item) {
+          console.log(this)
+        }
+      },
+      mounted() {
+        // console.log('praent2')
+
+      }
+    })
+  </script>
+</body>
+
+</html>

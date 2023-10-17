@@ -8,28 +8,23 @@
 <body>
 	<div id="app">
      <div v-html="msg">
-     	
-     	
      </div>
      <div>
-     	{{msg}}
+     	{{ msg }}
      </div>
 	</div>
 	<script>
 		
-
+		/**
+			ƒ anonymous(
+) {
+			with(this){return _c('div',{attrs:{"id":"app"}},[_c('div',{domProps:{"innerHTML":_s(msg)}}),_v(" "),_c('div',[_v("\n     \t"+_s(msg)+"\n     ")])])}
+			}
+		*/
 		var app = new Vue({
 			el: '#app',
 			data: {
-				msg: `<!DOCTYPE html>
-				<html>
-				<head>
-					<title></title>
-				</head>
-				<body>
-					<pre>sdffsfsdafwrwerwererrwerwer</pre>
-				</body>
-				</html>`,
+				msg: `<h1>1111111111111</h1>`,
 			},
 			filters: {
 			  partFilter: function (value) {

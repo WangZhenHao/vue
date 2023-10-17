@@ -3,37 +3,51 @@
   <head>
     <meta charset="UTF-8" />
     <title>Document</title>
-    <script src="../dist/vue.js"></script>
+    <script src="https://lib.baomitu.com/vue/2.6.12/vue.min.js"></script>
+    <!-- <script src="../dist/vue.js"></script> -->
+    <style>
+        .wrap {
+          width: 100px;
+          height: 100px;
+          background-size: 100% 100%;
+        }
+    </style>
   </head>
   <body>
-    <div id="app">
-      <button @click="changeTest1">changeTest1</button>
-      <button @click="changeTest2">changeTest2</button>
-      <div>
-        {{ form.test1 }} {{ form.test2 }}
+    <div id="app" @click="show">
+      <div v-for="item in list">
+        name: {{ item.name }}
+        <input v-for="info in item.pList" v-model="info.price" @input="showInput(info)" />
       </div>
     </div>
-    
+
     <script>
       let vm = new Vue({
         el: "#app",
         data: {
-          form: {},
-        },
-        mounted() {
-          this.form = {
-            test1: 1,
-          };
+          list: [
+            {
+              name: 'w',
+              pList: [{ price: ''},{ price: ''}],
 
-          console.log(vm)
+            },
+            {
+              name: 't',
+              pList: [{ price: ''},{ price: ''}],
+
+            }
+          ]
+        },
+
+        mounted() {
         },
         methods: {
-          changeTest2() {
-            this.form.test2 = 3;
+          show() {
+            console.log(this.list)
           },
-          changeTest1() {
-            this.form.test1 = 4;
-          },
+          showInput(info) {
+            console.log(info)
+          }
         },
       });
 
